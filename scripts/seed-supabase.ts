@@ -1,12 +1,9 @@
 /**
  * One-time seeder script — reads src/data/screenguards.json and inserts
- * all 106 boxes into Supabase.
+ * all 106 boxes and 800+ models into normalized Supabase tables (boxes & models).
  *
  * Usage (after setting up .env.local):
  *   npx tsx scripts/seed-supabase.ts
- *
- * Only run this ONCE after creating your Supabase project and running schema.sql.
- * If you re-run it, the upsert (on conflict id) will safely overwrite existing rows.
  */
 
 import { createClient } from "@supabase/supabase-js";
@@ -14,7 +11,6 @@ import * as fs from "fs";
 import * as path from "path";
 import * as dotenv from "dotenv";
 
-// Load .env.local
 dotenv.config({ path: path.resolve(process.cwd(), ".env.local") });
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -36,8 +32,6 @@ interface Box {
   title: string;
   compatibleModels: string[];
   rawText?: string;
-  category?: string;
-  notes?: string;
 }
 
 interface ScreenguardData {
@@ -51,35 +45,52 @@ async function seed() {
 
   console.log(`📦  Seeding ${data.boxes.length} boxes into Supabase…`);
 
-  const rows = data.boxes.map((box: Box) => ({
+  const boxRows = data.boxes.map((box: Box) => ({
     id: box.id,
     box_number: box.boxNumber,
     display_size: box.displaySize ?? "Unknown",
     title: box.title,
-    models: box.compatibleModels,
     raw_text: box.rawText ?? null,
-    category: box.category ?? null,
-    notes: box.notes ?? null,
   }));
 
-  // Upsert in batches of 50
-  const BATCH = 50;
-  let inserted = 0;
-
-  for (let i = 0; i < rows.length; i += BATCH) {
-    const batch = rows.slice(i, i + BATCH);
+  // 1. Upsert boxes in batches of 50
+  for (let i = 0; i < boxRows.length; i += 50) {
+    const batch = boxRows.slice(i, i + 50);
     const { error } = await supabase
-      .from("screenguards")
+      .from("boxes")
       .upsert(batch, { onConflict: "id" });
 
     if (error) {
-      console.error(`❌  Error on batch ${i / BATCH + 1}:`, error.message);
+      console.error(`❌  Boxes error on batch ${i / 50 + 1}:`, error.message);
       process.exit(1);
     }
-    inserted += batch.length;
-    console.log(`  ✓  ${inserted}/${rows.length} rows upserted`);
   }
 
+  console.log("  ✓  Boxes upserted successfully");
+
+  // 2. Prepare models
+  const modelRows: { box_id: string; model_name: string }[] = [];
+  for (const b of data.boxes) {
+    for (const model of b.compatibleModels) {
+      modelRows.push({ box_id: b.id, model_name: model });
+    }
+  }
+
+  // Clear existing models before inserting fresh ones
+  const boxIds = data.boxes.map((b) => b.id);
+  await supabase.from("models").delete().in("box_id", boxIds);
+
+  // Insert models in batches of 100
+  for (let i = 0; i < modelRows.length; i += 100) {
+    const batch = modelRows.slice(i, i + 100);
+    const { error } = await supabase.from("models").insert(batch);
+    if (error) {
+      console.error(`❌  Models error on batch ${i / 100 + 1}:`, error.message);
+      process.exit(1);
+    }
+  }
+
+  console.log(`  ✓  ${modelRows.length} model relationships inserted successfully`);
   console.log("\n✅  Seeding complete!");
 }
 

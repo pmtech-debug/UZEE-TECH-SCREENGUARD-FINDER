@@ -1,56 +1,52 @@
 import { getSupabaseClient } from "./supabase";
 import type { Box } from "@/types/screenguard";
 
-// ─── Row shape coming from Supabase ───────────────────────────────────────────
-interface SupabaseRow {
+// ─── Interfaces for Joined Query Result ────────────────────────────────────────
+interface ModelRow {
+  model_name: string;
+}
+
+interface BoxWithModelsRow {
   id: string;
   box_number: string;
   display_size: string;
   title: string;
-  models: string[];
   raw_text: string | null;
-  category: string | null;
-  notes: string | null;
-  created_at: string;
-  updated_at: string;
+  models: ModelRow[];
 }
 
 // ─── Converters ───────────────────────────────────────────────────────────────
-function rowToBox(row: SupabaseRow): Box {
+function rowToBox(row: BoxWithModelsRow): Box {
   return {
     id: row.id,
     boxNumber: row.box_number,
     displaySize: row.display_size,
     title: row.title,
-    compatibleModels: Array.isArray(row.models) ? row.models : [],
+    compatibleModels: Array.isArray(row.models)
+      ? row.models.map((m) => m.model_name)
+      : [],
     rawText: row.raw_text ?? undefined,
-    category: row.category ?? undefined,
-    notes: row.notes ?? undefined,
   };
 }
 
-function boxToRow(box: Box): Omit<SupabaseRow, "created_at" | "updated_at"> {
-  return {
-    id: box.id,
-    box_number: box.boxNumber,
-    display_size: box.displaySize ?? "Unknown",
-    title: box.title,
-    models: box.compatibleModels,
-    raw_text: box.rawText ?? null,
-    category: box.category ?? null,
-    notes: box.notes ?? null,
-  };
-}
+// ─── Data Access Layer (Normalized Boxes + Models) ─────────────────────────────
 
-// ─── Data Access Layer ────────────────────────────────────────────────────────
-
-/** Fetch all boxes, ordered by box_number */
+/** Fetch all boxes with their compatible models via 1-to-many join */
 export async function getAllBoxes(): Promise<Box[]> {
   const supabase = getSupabaseClient();
 
   const { data, error } = await supabase
-    .from("screenguards")
-    .select("*")
+    .from("boxes")
+    .select(`
+      id,
+      box_number,
+      display_size,
+      title,
+      raw_text,
+      models (
+        model_name
+      )
+    `)
     .order("box_number", { ascending: true });
 
   if (error) {
@@ -58,34 +54,74 @@ export async function getAllBoxes(): Promise<Box[]> {
     throw new Error(error.message);
   }
 
-  return (data as SupabaseRow[]).map(rowToBox);
+  return (data as unknown as BoxWithModelsRow[]).map(rowToBox);
 }
 
-/** Insert or update a single box (upsert on id) */
+/** Insert or update a box and its models */
 export async function upsertBox(box: Box): Promise<Box> {
   const supabase = getSupabaseClient();
-  const row = boxToRow(box);
 
-  const { data, error } = await supabase
-    .from("screenguards")
-    .upsert(row, { onConflict: "id" })
-    .select()
-    .single();
+  // 1. Upsert parent box record
+  const boxRow = {
+    id: box.id,
+    box_number: box.boxNumber,
+    display_size: box.displaySize ?? "Unknown",
+    title: box.title,
+    raw_text: box.rawText ?? null,
+  };
 
-  if (error) {
-    console.error("[db] upsertBox error:", error.message);
-    throw new Error(error.message);
+  const { error: boxError } = await supabase
+    .from("boxes")
+    .upsert(boxRow, { onConflict: "id" });
+
+  if (boxError) {
+    console.error("[db] upsertBox box error:", boxError.message);
+    throw new Error(boxError.message);
   }
 
-  return rowToBox(data as SupabaseRow);
+  // 2. Replace models for this box (delete existing + insert new list)
+  const { error: deleteError } = await supabase
+    .from("models")
+    .delete()
+    .eq("box_id", box.id);
+
+  if (deleteError) {
+    console.error("[db] upsertBox delete models error:", deleteError.message);
+    throw new Error(deleteError.message);
+  }
+
+  if (box.compatibleModels.length > 0) {
+    const modelRows = box.compatibleModels.map((m) => ({
+      box_id: box.id,
+      model_name: m,
+    }));
+
+    const { error: modelsError } = await supabase
+      .from("models")
+      .insert(modelRows);
+
+    if (modelsError) {
+      console.error("[db] upsertBox insert models error:", modelsError.message);
+      throw new Error(modelsError.message);
+    }
+  }
+
+  return {
+    id: box.id,
+    boxNumber: box.boxNumber,
+    displaySize: box.displaySize ?? "Unknown",
+    title: box.title,
+    compatibleModels: box.compatibleModels,
+    rawText: box.rawText,
+  };
 }
 
-/** Delete a box by id */
+/** Delete a box by id (Child models are automatically removed via ON DELETE CASCADE) */
 export async function deleteBox(id: string): Promise<void> {
   const supabase = getSupabaseClient();
 
   const { error } = await supabase
-    .from("screenguards")
+    .from("boxes")
     .delete()
     .eq("id", id);
 
