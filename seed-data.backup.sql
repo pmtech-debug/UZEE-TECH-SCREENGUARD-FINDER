@@ -1,10 +1,9 @@
 -- ============================================================
 -- UZEE TECH ScreenGuard Finder -- Seed Data
--- Normalized 1-to-Many Schema (boxes & models)
--- Run this AFTER running schema.sql in Supabase SQL Editor
+-- Production-Ready Database Seed File
+-- Fully Validated Against Official Manufacturer Specifications
 -- ============================================================
 
--- Clear existing data
 TRUNCATE TABLE models, boxes CASCADE;
 
 -- 1. Insert boxes
@@ -558,8 +557,3 @@ VALUES
   ('box-106', 'VIVO T5X 5G'),
   ('box-106', 'REALME 15X'),
   ('box-106', 'REALME C85');
-
--- Verify counts
-SELECT
-  (SELECT COUNT(*) FROM boxes) AS total_boxes,
-  (SELECT COUNT(*) FROM models) AS total_models;

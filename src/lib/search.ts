@@ -1,6 +1,64 @@
 import Fuse from "fuse.js";
 import type { Box, SearchResultItem } from "@/types/screenguard";
 
+// ─── Bidirectional Brand Aliases Mapping ───────────────────────────────────────
+const BRAND_ALIASES: Record<string, string[]> = {
+  ip: ["iphone"],
+  iphone: ["ip"],
+  sam: ["samsung", "galaxy"],
+  samsung: ["sam", "galaxy"],
+  galaxy: ["sam", "samsung"],
+  rm: ["redmi", "xiaomi"],
+  redmi: ["rm", "xiaomi"],
+  xiaomi: ["rm", "redmi", "xm"],
+  op: ["oppo"],
+  oppo: ["op"],
+  vo: ["vivo"],
+  vivo: ["vo"],
+  "1+": ["oneplus"],
+  oneplus: ["1+"],
+  real: ["realme"],
+  realme: ["real"],
+  xm: ["xiaomi", "redmi"],
+  poc: ["poco"],
+  poco: ["poc"],
+};
+
+/**
+ * Generates search query variations by replacing brand tokens with their aliases.
+ * e.g., "Samsung A06" -> ["Samsung A06", "SAM A06", "Galaxy A06"]
+ */
+function expandQueryWithAliases(query: string): string[] {
+  const trimmed = query.trim();
+  if (!trimmed) return [];
+
+  const tokens = trimmed.split(/\s+/);
+  const variations: string[][] = [[]];
+
+  for (const token of tokens) {
+    const tokenLower = token.toLowerCase();
+    const aliases = BRAND_ALIASES[tokenLower];
+
+    const nextVariations: string[][] = [];
+    const options = aliases ? [token, ...aliases] : [token];
+
+    for (const prefix of variations) {
+      for (const opt of options) {
+        nextVariations.push([...prefix, opt]);
+      }
+    }
+    variations.length = 0;
+    variations.push(...nextVariations);
+  }
+
+  // Combine back into string queries, cap at 8 variations
+  const queries = Array.from(
+    new Set(variations.map((v) => v.join(" ")))
+  ).slice(0, 8);
+
+  return queries;
+}
+
 export function createSearchEngine(boxes: Box[]) {
   const fuseOptions = {
     keys: [
@@ -19,7 +77,10 @@ export function createSearchEngine(boxes: Box[]) {
   return new Fuse(boxes, fuseOptions);
 }
 
-export function searchBoxes(fuse: Fuse<Box>, query: string): SearchResultItem[] {
+export function searchBoxes(
+  fuse: Fuse<Box>,
+  query: string
+): SearchResultItem[] {
   const trimmed = query.trim();
   if (!trimmed) return [];
 
@@ -28,13 +89,15 @@ export function searchBoxes(fuse: Fuse<Box>, query: string): SearchResultItem[] 
   if (boxMatch) {
     const num = parseInt(boxMatch[1], 10);
     const boxNumStr = `BOX ${num < 10 ? "0" + num : num}`;
-    
-    // Check if fuse list has this exact box
-    const exactBox = fuse.getIndex().docs.find(
-      (b) => b.boxNumber.toUpperCase() === boxNumStr || b.boxNumber.toUpperCase() === `BOX ${num}`
-    );
+
+    const exactBox = fuse
+      .getIndex()
+      .docs.find(
+        (b) =>
+          b.boxNumber.toUpperCase() === boxNumStr ||
+          b.boxNumber.toUpperCase() === `BOX ${num}`
+      );
     if (exactBox) {
-      // Return as top score
       const fuseResults = fuse.search(trimmed);
       const filtered = fuseResults.filter((r) => r.item.id !== exactBox.id);
       return [
@@ -44,41 +107,60 @@ export function searchBoxes(fuse: Fuse<Box>, query: string): SearchResultItem[] 
     }
   }
 
-  const results = fuse.search(trimmed);
+  // Expand query with brand aliases (IP ↔ IPHONE, SAM ↔ SAMSUNG, RM ↔ REDMI, OP ↔ OPPO, VO ↔ VIVO, etc.)
+  const expandedQueries = expandQueryWithAliases(query);
 
-  return results.map((res) => {
-    // Find best matched model string inside compatibleModels
-    const queryLower = trimmed.toLowerCase();
-    const queryTokens = queryLower.split(/\s+/).filter(Boolean);
-    
-    let bestModel: string | undefined;
-    let maxMatchCount = 0;
+  const resultMap = new Map<
+    string,
+    { item: Box; score: number; matchedModel?: string }
+  >();
 
-    for (const model of res.item.compatibleModels) {
-      const modelLower = model.toLowerCase();
-      
-      if (modelLower === queryLower) {
-        bestModel = model;
-        break;
-      }
-      
-      let count = 0;
-      for (const token of queryTokens) {
-        if (modelLower.includes(token)) {
-          count++;
+  for (const q of expandedQueries) {
+    const fuseResults = fuse.search(q);
+
+    for (const res of fuseResults) {
+      const existing = resultMap.get(res.item.id);
+      const currentScore = res.score ?? 1;
+
+      if (!existing || currentScore < existing.score) {
+        // Find best matched model string inside compatibleModels
+        const queryLower = q.toLowerCase();
+        const queryTokens = queryLower.split(/\s+/).filter(Boolean);
+
+        let bestModel: string | undefined;
+        let maxMatchCount = 0;
+
+        for (const model of res.item.compatibleModels) {
+          const modelLower = model.toLowerCase();
+
+          if (modelLower === queryLower) {
+            bestModel = model;
+            break;
+          }
+
+          let count = 0;
+          for (const token of queryTokens) {
+            if (modelLower.includes(token)) {
+              count++;
+            }
+          }
+
+          if (count > maxMatchCount) {
+            maxMatchCount = count;
+            bestModel = model;
+          }
         }
-      }
-      
-      if (count > maxMatchCount) {
-        maxMatchCount = count;
-        bestModel = model;
+
+        resultMap.set(res.item.id, {
+          item: res.item,
+          score: currentScore,
+          matchedModel: bestModel || res.item.compatibleModels[0],
+        });
       }
     }
+  }
 
-    return {
-      item: res.item,
-      score: res.score,
-      matchedModel: bestModel || res.item.compatibleModels[0],
-    };
-  });
+  return Array.from(resultMap.values()).sort(
+    (a, b) => (a.score ?? 1) - (b.score ?? 1)
+  );
 }
