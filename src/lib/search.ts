@@ -51,7 +51,6 @@ function expandQueryWithAliases(query: string): string[] {
     variations.push(...nextVariations);
   }
 
-  // Combine back into string queries, cap at 8 variations
   const queries = Array.from(
     new Set(variations.map((v) => v.join(" ")))
   ).slice(0, 8);
@@ -84,7 +83,7 @@ export function searchBoxes(
   const trimmed = query.trim();
   if (!trimmed) return [];
 
-  // Direct exact box number match check e.g. "box 01", "box 1", "01", "49"
+  // 1. Direct exact box number match check e.g. "box 01", "box 1", "01", "49"
   const boxMatch = trimmed.match(/^(?:box\s*)?(\d{1,3})$/i);
   if (boxMatch) {
     const num = parseInt(boxMatch[1], 10);
@@ -107,7 +106,7 @@ export function searchBoxes(
     }
   }
 
-  // Expand query with brand aliases (IP ↔ IPHONE, SAM ↔ SAMSUNG, RM ↔ REDMI, OP ↔ OPPO, VO ↔ VIVO, etc.)
+  // 2. Expand query with brand aliases
   const expandedQueries = expandQueryWithAliases(query);
 
   const resultMap = new Map<
@@ -115,42 +114,64 @@ export function searchBoxes(
     { item: Box; score: number; matchedModel?: string }
   >();
 
+  // Extract non-brand tokens from query for exact model token matching
+  const originalTokens = trimmed.toLowerCase().split(/\s+/).filter(Boolean);
+  const modelTokens = originalTokens.filter((t) => !BRAND_ALIASES[t]);
+
   for (const q of expandedQueries) {
     const fuseResults = fuse.search(q);
 
     for (const res of fuseResults) {
-      const existing = resultMap.get(res.item.id);
-      const currentScore = res.score ?? 1;
+      let currentScore = res.score ?? 1;
 
-      if (!existing || currentScore < existing.score) {
-        // Find best matched model string inside compatibleModels
-        const queryLower = q.toLowerCase();
-        const queryTokens = queryLower.split(/\s+/).filter(Boolean);
+      // Find best matched model string inside compatibleModels
+      const queryLower = q.toLowerCase();
+      const queryTokens = queryLower.split(/\s+/).filter(Boolean);
 
-        let bestModel: string | undefined;
-        let maxMatchCount = 0;
+      let bestModel: string | undefined;
+      let maxMatchCount = 0;
+      let hasExactModelTokenMatch = false;
 
-        for (const model of res.item.compatibleModels) {
-          const modelLower = model.toLowerCase();
+      for (const model of res.item.compatibleModels) {
+        const modelLower = model.toLowerCase();
+        const modelWords = modelLower.split(/\s+/);
 
-          if (modelLower === queryLower) {
-            bestModel = model;
-            break;
-          }
+        // Check if model contains all model-specific tokens (e.g. "a06") as standalone words
+        const matchesAllModelTokens =
+          modelTokens.length > 0 &&
+          modelTokens.every((mt) =>
+            modelWords.some((w) => w === mt || w.startsWith(mt))
+          );
 
-          let count = 0;
-          for (const token of queryTokens) {
-            if (modelLower.includes(token)) {
-              count++;
-            }
-          }
+        if (matchesAllModelTokens) {
+          hasExactModelTokenMatch = true;
+        }
 
-          if (count > maxMatchCount) {
-            maxMatchCount = count;
-            bestModel = model;
+        if (modelLower === queryLower) {
+          bestModel = model;
+          break;
+        }
+
+        let count = 0;
+        for (const token of queryTokens) {
+          if (modelLower.includes(token)) {
+            count++;
           }
         }
 
+        if (count > maxMatchCount) {
+          maxMatchCount = count;
+          bestModel = model;
+        }
+      }
+
+      // Boost score if the box contains the exact model token match
+      if (hasExactModelTokenMatch) {
+        currentScore = currentScore * 0.1; // Significant boost
+      }
+
+      const existing = resultMap.get(res.item.id);
+      if (!existing || currentScore < existing.score) {
         resultMap.set(res.item.id, {
           item: res.item,
           score: currentScore,
