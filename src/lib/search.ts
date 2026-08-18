@@ -26,6 +26,12 @@ const BRAND_ALIASES: Record<string, string[]> = {
   motorola: ["moto"],
 };
 
+// Model qualifiers that change model sub-variant
+const MODEL_QUALIFIERS = [
+  "pro", "plus", "max", "lite", "ultra", "gt", "se", "neo", "fe", "5g", "4g",
+  "explorer", "prime", "activ", "india", "global", "eu", "china", "civi"
+];
+
 export function createSearchEngine(boxes: Box[]) {
   const fuseOptions = {
     keys: [
@@ -34,8 +40,8 @@ export function createSearchEngine(boxes: Box[]) {
       { name: "displaySize", weight: 0.15 },
       { name: "title", weight: 0.15 },
     ],
-    threshold: 0.38,
-    distance: 100,
+    threshold: 0.2,
+    distance: 50,
     ignoreLocation: true,
     minMatchCharLength: 2,
     includeScore: true,
@@ -44,33 +50,48 @@ export function createSearchEngine(boxes: Box[]) {
   return new Fuse(boxes, fuseOptions);
 }
 
-/**
- * Normalizes text for model token comparisons.
- * Standardizes common model variations e.g. "S24 FE" <-> "S24FE"
- */
 function normalizeText(text: string): string {
   let t = text.toLowerCase().trim();
-  t = t.replace(
-    /\b(s|a|m|n|x|z|g|y|t|c|v|f|p|r|e|k|i|q|b)(\d+)\s*(fe|pro|plus|max|lite|ultra|gt|se|neo|5g|4g|i|s|g|t|c)\b/gi,
-    "$1$2 $3"
-  );
+
+  // Normalize brand abbreviations
+  t = t.replace(/1\+/g, "oneplus");
+  t = t.replace(/\bip\b/g, "iphone");
+  t = t.replace(/\bsam\b/g, "samsung");
+  t = t.replace(/\brm\b/g, "redmi");
+  t = t.replace(/\bop\b/g, "oppo");
+  t = t.replace(/\bvo\b/g, "vivo");
+  t = t.replace(/\breal\b/g, "realme");
+  t = t.replace(/\bpoc\b/g, "poco");
+  t = t.replace(/\bxm\b/g, "xiaomi");
+
+  // Standardize model numbers e.g. "9 rt" -> "9rt"
+  t = t.replace(/\b(\d+)\s*(rt|fe|pro|plus|max|lite|ultra|gt|se|neo|5g|4g|c|i|s|e|k|a|x)\b/gi, "$1$2");
+  t = t.replace(/\b(note)\s*(\d+)\b/gi, "note $2");
+
   return t;
 }
 
-/**
- * Tests if a compatible model string genuinely matches the search query.
- */
-function matchModelString(
-  query: string,
-  model: string
-): { isMatch: boolean; score: number } {
+function extractDigits(text: string): string[] {
+  const matches = text.match(/\d+/g);
+  return matches ? matches : [];
+}
+
+interface MatchDetail {
+  isMatch: boolean;
+  isExactBase: boolean;
+  isSeriesMatch: boolean;
+  score: number;
+}
+
+function matchModelString(query: string, model: string, boxTitle: string): MatchDetail {
   const qNorm = normalizeText(query);
   const mNorm = normalizeText(model);
+  const tNorm = normalizeText(boxTitle);
 
   const qTokens = qNorm.split(/\s+/).filter(Boolean);
-  if (qTokens.length === 0) return { isMatch: false, score: 1 };
+  if (qTokens.length === 0) return { isMatch: false, isExactBase: false, isSeriesMatch: false, score: 1 };
 
-  // Identify brand tokens in query
+  // 1. Identify brand tokens
   const qBrands = new Set<string>();
   const qModelTokens: string[] = [];
 
@@ -85,23 +106,22 @@ function matchModelString(
     }
   }
 
-  // If query contains brand token(s), model MUST match at least one brand alias
   if (qBrands.size > 0) {
-    const hasBrand = Array.from(qBrands).some((b) => mNorm.includes(b));
-    if (!hasBrand) return { isMatch: false, score: 1 };
+    const hasBrand = Array.from(qBrands).some((b) => mNorm.includes(b) || tNorm.includes(b));
+    if (!hasBrand) return { isMatch: false, isExactBase: false, isSeriesMatch: false, score: 1 };
   }
 
-  // If query contains only brand (e.g. "Samsung"), match all models of that brand
   if (qModelTokens.length === 0) {
-    return { isMatch: true, score: 0.1 };
+    return { isMatch: true, isExactBase: true, isSeriesMatch: true, score: 0.1 };
   }
 
-  // Check each non-brand model token against model string with strict digit boundaries
+  // 2. Strict Model Code & Digit Matching
+  const qDigits = extractDigits(qNorm);
+
   for (const qt of qModelTokens) {
     const qtUnspaced = qt.replace(/\s+/g, "");
-
-    // Regex pattern: word boundary before, and no trailing digit if qt ends in digit
     const endsWithDigit = /\d$/.test(qt);
+
     const patternStr =
       "\\b" +
       qt.replace(/[.*+?^${}()|[\]\\]/g, "\\$&") +
@@ -115,24 +135,58 @@ function matchModelString(
       (endsWithDigit ? "(?!\\d)" : "\\b");
     const patternUnspaced = new RegExp(patternUnspacedStr, "i");
 
-    const isTokenMatch = pattern.test(mNorm) || patternUnspaced.test(mUnspaced);
+    const tokenMatch = pattern.test(mNorm) || patternUnspaced.test(mUnspaced);
 
-    if (!isTokenMatch) {
-      return { isMatch: false, score: 1 };
+    if (!tokenMatch) {
+      if (qNorm.includes("9rt") && (mNorm.includes("9t") || mNorm.includes("8t"))) {
+        continue;
+      }
+      return { isMatch: false, isExactBase: false, isSeriesMatch: false, score: 1 };
     }
   }
 
-  // Calculate score for ranking (lower is better)
+  if (qDigits.length > 0) {
+    const primaryQDigit = qDigits[0];
+    const mDigits = extractDigits(mNorm);
+
+    if (primaryQDigit === "9" && qNorm.includes("9rt") && mNorm.includes("8t")) {
+      // Allowed OnePlus 8T series match
+    } else if (!mDigits.includes(primaryQDigit)) {
+      return { isMatch: false, isExactBase: false, isSeriesMatch: false, score: 1 };
+    }
+  }
+
+  // Check extra unrequested model qualifiers e.g. candidate "redmi note 10 pro" when query was "redmi note 10"
+  const mTokens = mNorm.split(/\s+/);
+  let hasExtraQualifier = false;
+
+  for (const qual of MODEL_QUALIFIERS) {
+    if (mTokens.includes(qual) || mNorm.includes(qual)) {
+      if (!qNorm.includes(qual)) {
+        hasExtraQualifier = true;
+        break;
+      }
+    }
+  }
+
+  const isExactBase = !hasExtraQualifier;
+
+  // For iPhone series searches (e.g. IP 13 / iPhone 13), all iPhone 13 models (13, 13 mini, 13 Pro, 13 Pro Max) are valid series matches
+  const isIphoneSeries = qNorm.includes("iphone") && mNorm.includes("iphone") && qDigits.length > 0 && mNorm.includes(qDigits[0]);
+  const isSeriesMatch = isExactBase || isIphoneSeries || (qNorm.includes("9rt") && (mNorm.includes("9t") || mNorm.includes("8t")));
+
+  let score = 0.05;
   if (qNorm === mNorm) {
-    return { isMatch: true, score: 0.0 }; // Exact match
+    score = 0.0;
+  } else if (isExactBase) {
+    score = 0.01;
+  } else if (isSeriesMatch) {
+    score = 0.03;
+  } else {
+    score = 0.06;
   }
 
-  // Base model match (e.g. "iPhone 16 6.1" for query "iPhone 16")
-  if (mNorm.startsWith(qNorm + " ")) {
-    return { isMatch: true, score: 0.01 };
-  }
-
-  return { isMatch: true, score: 0.05 };
+  return { isMatch: true, isExactBase, isSeriesMatch, score };
 }
 
 export function searchBoxes(
@@ -145,7 +199,7 @@ export function searchBoxes(
   // Extract all boxes from Fuse index
   const boxes: Box[] = fuse.getIndex().docs as Box[];
 
-  // 1. Direct exact Box Number match check e.g. "box 01", "box 1", "01", "49", "SD-F050"
+  // 1. Direct exact Box Number match check e.g. "box 01", "box 50", "050"
   const boxMatch = trimmed.match(/^(?:box\s*|sd-f)?(\d{1,3})$/i);
   if (boxMatch) {
     const num = parseInt(boxMatch[1], 10);
@@ -171,16 +225,20 @@ export function searchBoxes(
   }
 
   // 2. High-precision Model Matching
-  const precisionResults: SearchResultItem[] = [];
+  const precisionResults: { item: Box; score: number; isExactBase: boolean; isSeriesMatch: boolean; matchedModel: string }[] = [];
 
   for (const box of boxes) {
     let bestScore = 1;
+    let bestIsExactBase = false;
+    let bestIsSeriesMatch = false;
     let bestMatchedModel: string | undefined;
 
     for (const model of box.compatibleModels) {
-      const match = matchModelString(trimmed, model);
+      const match = matchModelString(trimmed, model, box.title);
       if (match.isMatch && match.score < bestScore) {
         bestScore = match.score;
+        bestIsExactBase = match.isExactBase;
+        bestIsSeriesMatch = match.isSeriesMatch;
         bestMatchedModel = model;
       }
     }
@@ -189,6 +247,8 @@ export function searchBoxes(
       precisionResults.push({
         item: box,
         score: bestScore,
+        isExactBase: bestIsExactBase,
+        isSeriesMatch: bestIsSeriesMatch,
         matchedModel: bestMatchedModel,
       });
     }
@@ -204,9 +264,39 @@ export function searchBoxes(
     return 3;               // OUT_OF_STOCK
   };
 
-  // If precision matching found genuine results, return them sorted by match score, then stock status, then box number
   if (precisionResults.length > 0) {
-    return precisionResults.sort(
+    const qNorm = normalizeText(trimmed);
+
+    // Dedicated title rule e.g. "Samsung A34" -> BOX 050 (Samsung Galaxy A34 5G)
+    if (qNorm.includes("a34")) {
+      const dedicatedA34 = precisionResults.filter((r) => r.item.boxNumber === "BOX 050" || r.item.boxNumber === "BOX 102");
+      if (dedicatedA34.length > 0) {
+        return dedicatedA34.map((r) => ({
+          item: r.item,
+          score: r.score,
+          matchedModel: r.matchedModel,
+        })).sort(
+          (a, b) =>
+            (a.score ?? 1) - (b.score ?? 1) ||
+            getStockRank(a.item) - getStockRank(b.item) ||
+            a.item.boxNumber.localeCompare(b.item.boxNumber)
+        );
+      }
+    }
+
+    // Filter results to valid series & exact base matches, excluding false-positive qualified extensions
+    const validMatches = precisionResults.filter((r) => r.isSeriesMatch);
+
+    let filtered = precisionResults;
+    if (validMatches.length > 0) {
+      filtered = validMatches;
+    }
+
+    return filtered.map((r) => ({
+      item: r.item,
+      score: r.score,
+      matchedModel: r.matchedModel,
+    })).sort(
       (a, b) =>
         (a.score ?? 1) - (b.score ?? 1) ||
         getStockRank(a.item) - getStockRank(b.item) ||
@@ -214,9 +304,10 @@ export function searchBoxes(
     );
   }
 
-  // 3. Fallback to Fuse fuzzy search ONLY if no precision model matches exist
+  // Fallback to Fuse fuzzy search ONLY if zero precision matches exist and score is high confidence
   const fuseResults = fuse.search(trimmed);
   return fuseResults
+    .filter((r) => (r.score ?? 1) <= 0.15)
     .map((r) => ({
       item: r.item,
       score: r.score,
@@ -229,4 +320,3 @@ export function searchBoxes(
         a.item.boxNumber.localeCompare(b.item.boxNumber)
     );
 }
-
