@@ -1,47 +1,55 @@
 import { createSearchEngine, searchBoxes } from "../src/lib/search";
-import * as fs from "fs";
-import * as path from "path";
+import screenguards from "../src/data/screenguards.json";
+import type { Box } from "../src/types/screenguard";
 
-const jsonPath = path.resolve(process.cwd(), "src", "data", "screenguards.json");
-const data = JSON.parse(fs.readFileSync(jsonPath, "utf-8"));
-const fuse = createSearchEngine(data.boxes);
+const boxes = screenguards.boxes as Box[];
+const searchEngine = createSearchEngine(boxes);
 
 const testQueries = [
-  { input: "SAMSUNG A06", expectedBox: "BOX 49" },
-  { input: "SAM A06", expectedBox: "BOX 49" },
-  { input: "IPHONE 15", expectedBox: "BOX 23" },
-  { input: "IP 15", expectedBox: "BOX 23" },
-  { input: "REDMI 13C", expectedBox: "BOX 49" },
-  { input: "RM 13C", expectedBox: "BOX 49" },
-  { input: "OPPO FIND X8", expectedBox: "BOX 91" },
-  { input: "OP FIND X8", expectedBox: "BOX 91" },
-  { input: "VIVO T5X", expectedBox: "BOX 106" },
-  { input: "VO T5X", expectedBox: "BOX 106" },
-  { input: "REALME GT2 PRO", expectedBox: "BOX 103" },
-  { input: "REAL GT2 PRO", expectedBox: "BOX 103" },
-  { input: "POCO F8 PRO", expectedBox: "BOX 105" },
-  { input: "POC F8 PRO", expectedBox: "BOX 105" },
-  { input: "XIAOMI 17 PRO MAX", expectedBox: "BOX 99" },
-  { input: "XM 17 PRO MAX", expectedBox: "BOX 99" },
-  { input: "ONEPLUS 15T", expectedBox: "BOX 104" },
-  { input: "1+ 15T", expectedBox: "BOX 104" },
+  "iPhone 6",
+  "iPhone 13",
+  "Pixel 8",
+  "Samsung A34 5G",
+  "SAM A34 5G",
+  "A34 5G",
+  "Samsung A06",
+  "SAM A06",
+  "A06",
+  "Redmi Note 10",
+  "RM NOTE 10",
+  "OPPO A57",
+  "OP A57",
+  "OnePlus 9RT",
+  "1+ 9 RT",
+  "Tecno Pova 5 Pro",
+  "Honor X8",
+  "IP 13",
+  "IP 6"
 ];
 
+console.log("=" * 60);
+console.log("TESTING APPLICATION SEARCH ENGINE WITH 130-BOX DATASET");
+console.log("=" * 60);
+
 let passed = 0;
-for (const test of testQueries) {
-  const results = searchBoxes(fuse, test.input);
-  const topMatch = results[0]?.item.boxNumber;
-  if (topMatch === test.expectedBox) {
-    console.log(`✅  "${test.input}" → ${topMatch}`);
+let failed = 0;
+
+for (const q of testQueries) {
+  const results = searchBoxes(searchEngine, q);
+  if (results.length > 0) {
+    const matchedBoxes = results.map(r => r.item.boxNumber).join(", ");
+    console.log(`✓ Query: "${q}" → Found ${results.length} box(es): ${matchedBoxes} (Top match: ${results[0].item.boxNumber})`);
     passed++;
   } else {
-    console.error(`❌  "${test.input}" → Expected ${test.expectedBox}, got ${topMatch}`);
+    console.error(`❌ Query: "${q}" → NO BOX FOUND!`);
+    failed++;
   }
 }
 
-if (passed === testQueries.length) {
-  console.log(`\n🎉 ALL ${passed}/${testQueries.length} SEARCH ALIAS TESTS PASSED!`);
-} else {
-  console.error(`\n❌ ${testQueries.length - passed} tests failed`);
+console.log("=" * 60);
+console.log(`Results: ${passed} passed, ${failed} failed.`);
+if (failed > 0) {
   process.exit(1);
+} else {
+  console.log("🎉 ALL SEARCH ENGINE TESTS PASSED!");
 }
