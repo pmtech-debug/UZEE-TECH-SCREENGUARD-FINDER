@@ -1,1399 +1,1696 @@
 {
-  "version": "3.0",
-  "lastUpdated": "2026-08-07",
-  "totalBoxes": 106,
+  "version": "2.0.0-130box",
+  "lastUpdated": "2026-08-18T21:06:34.933572+00:00",
+  "totalBoxes": 130,
+  "totalRelationships": 520,
+  "uniqueModels": 481,
   "boxes": [
     {
-      "id": "box-1",
-      "boxNumber": "BOX 01",
-      "displaySize": "5.5\"",
-      "title": "IPHONE 6 PLUS/IP 6S PLUS",
-      "compatibleModels": [
-        "IPHONE 6 PLUS",
-        "IPHONE 6S PLUS"
-      ],
-      "rawText": "IPHONE 6 PLUS/IP 6S PLUS"
-    },
-    {
-      "id": "box-2",
-      "boxNumber": "BOX 02",
-      "displaySize": "6.7\"",
-      "title": "SAM A05S/M14 4G/F14 4G",
-      "compatibleModels": [
-        "SAM A05S",
-        "SAM M14 4G",
-        "SAM F14 4G"
-      ],
-      "rawText": "SAM A05S/M14 4G/F14 4G"
-    },
-    {
-      "id": "box-3",
-      "boxNumber": "BOX 03",
+      "id": "box-001",
+      "boxNumber": "BOX 001",
       "displaySize": "4.7\"",
-      "title": "IPHONE 7/IPHONE 8",
+      "title": "iPhone 6",
+      "rawText": "IP 6 / 7 / 8",
       "compatibleModels": [
-        "IPHONE 7",
-        "IPHONE 8"
-      ],
-      "rawText": "IPHONE 7/IP 8"
+        "iPhone 6",
+        "iPhone 7",
+        "iPhone 8"
+      ]
     },
     {
-      "id": "box-4",
-      "boxNumber": "BOX 04",
-      "displaySize": "REVIEW REQUIRED",
-      "title": "SAM A12/A02/A02S/A02 5G/A03/A03S/A03 CORE/A04/A04S/A04 CORE/A04 E/A13 4G/5G/A23 4G/5G/A32 5G/M02 4G/M02S/M04 4G/M12/M13 4G/5G/M13 INDIA/M23 5G/M32 5G/M33 5G/F02S 4G/F04 4G/F12 4G/F13 4G/F23 5G",
-      "compatibleModels": [
-        "SAM A12",
-        "SAM A02",
-        "SAM A02S",
-        "SAM A02 5G",
-        "SAM A03",
-        "SAM A03S",
-        "SAM A03 CORE",
-        "SAM A04",
-        "SAM A04S",
-        "SAM A04 CORE",
-        "SAM A04 E",
-        "SAM A13 4G",
-        "SAM A13 5G",
-        "SAM A23 4G",
-        "SAM A23 5G",
-        "SAM A32 5G",
-        "SAM M02 4G",
-        "SAM M02S",
-        "SAM M04 4G",
-        "SAM M12",
-        "SAM M13 4G",
-        "SAM M13 5G",
-        "SAM M13 INDIA",
-        "SAM M23 5G",
-        "SAM M32 5G",
-        "SAM M33 5G",
-        "SAM F02S 4G",
-        "SAM F04 4G",
-        "SAM F12 4G",
-        "SAM F13 4G",
-        "SAM F23 5G"
-      ],
-      "rawText": "SAM A12/A02/A02S/A02 5G/A03/A03S/A03 CORE/A04/A04S/A04 CORE/A04 E/A13 4G/5G/A23 4G/5G/A32 5G/M02 4G/M02S/M04 4G/M12/M13 4G/5G/M13 INDIA/M23 5G/M32 5G/M33 5G/F02S 4G/F04 4G/F12 4G/F13 4G/F23 5G"
-    },
-    {
-      "id": "box-5",
-      "boxNumber": "BOX 05",
+      "id": "box-002",
+      "boxNumber": "BOX 002",
       "displaySize": "5.5\"",
-      "title": "IPHONE 7 PLUS/IPHONE 8 PLUS",
+      "title": "iPhone 6+",
+      "rawText": "IP 6+ / 7+ / 8+",
       "compatibleModels": [
-        "IPHONE 7 PLUS",
-        "IPHONE 8 PLUS"
-      ],
-      "rawText": "IPHONE 7 PLUS/IP 8 PLUS"
+        "iPhone 6+",
+        "iPhone 7+",
+        "iPhone 8+"
+      ]
     },
     {
-      "id": "box-6",
-      "boxNumber": "BOX 06",
+      "id": "box-003",
+      "boxNumber": "BOX 003",
       "displaySize": "5.8\"",
-      "title": "IPHONE X/XS/IPHONE 11 PRO",
+      "title": "iPhone X",
+      "rawText": "IP X / XS / 11 Pro",
       "compatibleModels": [
-        "IPHONE X",
-        "IPHONE XS",
-        "IPHONE 11 PRO"
-      ],
-      "rawText": "IPHONE X/XS/IP 11 PRO"
+        "iPhone X",
+        "iPhone XS",
+        "iPhone 11 Pro"
+      ]
     },
     {
-      "id": "box-7",
-      "boxNumber": "BOX 07",
+      "id": "box-004",
+      "boxNumber": "BOX 004",
       "displaySize": "6.1\"",
-      "title": "IPHONE XR/IPHONE 11",
+      "title": "iPhone XR",
+      "rawText": "IP XR / 11",
       "compatibleModels": [
-        "IPHONE XR",
-        "IPHONE 11"
-      ],
-      "rawText": "IPHONE XR 6.1/IP 11"
+        "iPhone XR",
+        "iPhone 11"
+      ]
     },
     {
-      "id": "box-8",
-      "boxNumber": "BOX 08",
-      "displaySize": "6.6\"",
-      "title": "SAM A14 4G/A14 5G/M14 5G/F14 5G",
-      "compatibleModels": [
-        "SAM A14 4G",
-        "SAM A14 5G",
-        "SAM M14 5G",
-        "SAM F14 5G"
-      ],
-      "rawText": "SAM A14 4G/A14 5G/M14 5G/F14 5G"
-    },
-    {
-      "id": "box-9",
-      "boxNumber": "BOX 09",
+      "id": "box-005",
+      "boxNumber": "BOX 005",
       "displaySize": "6.5\"",
-      "title": "IPHONE XS MAX/IPHONE 11 PRO MAX",
+      "title": "iPhone XS Max",
+      "rawText": "IP XS Max / 11 Pro Max",
       "compatibleModels": [
-        "IPHONE XS MAX",
-        "IPHONE 11 PRO MAX"
-      ],
-      "rawText": "IPHONE XS MAX/IP 11 PRO MAX"
+        "iPhone XS Max",
+        "iPhone 11 Pro Max"
+      ]
     },
     {
-      "id": "box-10",
-      "boxNumber": "BOX 10",
-      "displaySize": "REVIEW REQUIRED",
-      "title": "SAM A15 4G/A15 5G/A25 5G/A24 4G/M34 5G/F34 5G/F15/M15",
-      "compatibleModels": [
-        "SAM A15 4G",
-        "SAM A15 5G",
-        "SAM A25 5G",
-        "SAM A24 4G",
-        "SAM M34 5G",
-        "SAM F34 5G",
-        "SAM F15 5G",
-        "SAM M15 5G"
-      ],
-      "rawText": "SAM A15 4G/A15 5G/A25 5G/SAM A24 4G/ M34 5G/F34 5G/F15/M15"
-    },
-    {
-      "id": "box-11",
-      "boxNumber": "BOX 11",
+      "id": "box-006",
+      "boxNumber": "BOX 006",
       "displaySize": "6.1\"",
-      "title": "IPHONE 12/IPHONE 12 PRO",
+      "title": "iPhone 12",
+      "rawText": "IP 12 / 12 Pro",
       "compatibleModels": [
-        "IPHONE 12",
-        "IPHONE 12 PRO"
-      ],
-      "rawText": "IPHONE 12/IP 12 PRO"
+        "iPhone 12",
+        "iPhone 12 Pro"
+      ]
     },
     {
-      "id": "box-12",
-      "boxNumber": "BOX 12",
-      "displaySize": "REVIEW REQUIRED",
-      "title": "SAM A16 4G/A16 5G/A17 5G/A26/M16/M17 5G/M36/F16/F17/F36",
+      "id": "box-007",
+      "boxNumber": "BOX 007",
+      "displaySize": "5.4\"",
+      "title": "iPhone 12 mini",
+      "rawText": "IP 12 mini / 13 mini",
       "compatibleModels": [
-        "SAM A16 4G",
-        "SAM A16 5G",
-        "SAM A17 5G",
-        "SAM A26 5G",
-        "SAM M16 5G",
-        "SAM M17 5G",
-        "SAM M36 5G",
-        "SAM F16 5G",
-        "SAM F17 5G",
-        "SAM F36 5G"
-      ],
-      "rawText": "SAM A16 4G/A16 5G/A17 5G/A26/M16/M17 5G/M36/F16/F17/F36"
+        "iPhone 12 mini",
+        "iPhone 13 mini"
+      ]
     },
     {
-      "id": "box-13",
-      "boxNumber": "BOX 13",
+      "id": "box-008",
+      "boxNumber": "BOX 008",
       "displaySize": "6.7\"",
-      "title": "IPHONE 12 PRO MAX",
+      "title": "iPhone 12 Pro Max",
+      "rawText": "IP 12 Pro Max",
       "compatibleModels": [
-        "IPHONE 12 PRO MAX"
-      ],
-      "rawText": "IPHONE 12 PRO MAX"
+        "iPhone 12 Pro Max"
+      ]
     },
     {
-      "id": "box-14",
-      "boxNumber": "BOX 14",
-      "displaySize": "6.6\"",
-      "title": "SAM A22 5G/F42 5G",
-      "compatibleModels": [
-        "SAM A22 5G",
-        "SAM F42 5G"
-      ],
-      "rawText": "SAM A22 5G/F42 5G"
-    },
-    {
-      "id": "box-15",
-      "boxNumber": "BOX 15",
+      "id": "box-009",
+      "boxNumber": "BOX 009",
       "displaySize": "6.1\"",
-      "title": "IPHONE 13/13 PRO/14/16E/17E",
+      "title": "iPhone 13",
+      "rawText": "IP 13 / 13 Pro / 14 / 16e",
       "compatibleModels": [
-        "IPHONE 13",
-        "IPHONE 13 PRO",
-        "IPHONE 14",
-        "IPHONE 16E",
-        "IPHONE 17E"
-      ],
-      "rawText": "IPHONE 13 /IP 13 PRO/IP 14 6.1/IP 16E/IP 17E"
+        "iPhone 13",
+        "iPhone 13 Pro",
+        "iPhone 14",
+        "iPhone 16e"
+      ]
     },
     {
-      "id": "box-16",
-      "boxNumber": "BOX 16",
-      "displaySize": "REVIEW REQUIRED",
-      "title": "SAM A30/A50/A20/A30S/A50S/M10S/M21/M21S/M21 2021/M30/M30S/M31/M31 PRIME/F41",
-      "compatibleModels": [
-        "SAM A30",
-        "SAM A50",
-        "SAM A20",
-        "SAM A30S",
-        "SAM A50S",
-        "SAM M10S",
-        "SAM M21",
-        "SAM M21S",
-        "SAM M21 2021",
-        "SAM M30",
-        "SAM M30S",
-        "SAM M31",
-        "SAM M31 PRIME",
-        "SAM F41"
-      ],
-      "rawText": "SAM A30/A50/A20/A30S/A50S/M10S/M21/M21S/M21 2021/M30/M30S/M31/M31 PRIME/F41"
-    },
-    {
-      "id": "box-17",
-      "boxNumber": "BOX 17",
+      "id": "box-010",
+      "boxNumber": "BOX 010",
       "displaySize": "6.7\"",
-      "title": "IPHONE 13 PRO MAX/IPHONE 14 PLUS",
+      "title": "iPhone 13 Pro Max",
+      "rawText": "IP 13 Pro Max / 14+",
       "compatibleModels": [
-        "IPHONE 13 PRO MAX",
-        "IPHONE 14 PLUS"
-      ],
-      "rawText": "IPHONE 13 PRO MAX/IP 14 PLUS"
+        "iPhone 13 Pro Max",
+        "iPhone 14+"
+      ]
     },
     {
-      "id": "box-18",
-      "boxNumber": "BOX 18",
-      "displaySize": "REVIEW REQUIRED",
-      "title": "SAM A31/A32 4G/A33 5G/A22 4G/F22 4G/M22 4G/M32 4G",
-      "compatibleModels": [
-        "SAM A31",
-        "SAM A32 4G",
-        "SAM A33 5G",
-        "SAM A22 4G",
-        "SAM F22 4G",
-        "SAM M22 4G",
-        "SAM M32 4G"
-      ],
-      "rawText": "SAM A31/A32 4G/A33 5G/A22 4G/F22 4G/M22 4G/M32 4G"
-    },
-    {
-      "id": "box-19",
-      "boxNumber": "BOX 19",
+      "id": "box-011",
+      "boxNumber": "BOX 011",
       "displaySize": "6.1\"",
-      "title": "IPHONE 14 PRO",
+      "title": "iPhone 14 Pro",
+      "rawText": "IP 14 Pro",
       "compatibleModels": [
-        "IPHONE 14 PRO"
-      ],
-      "rawText": "IPHONE 14 PRO"
+        "iPhone 14 Pro"
+      ]
     },
     {
-      "id": "box-20",
-      "boxNumber": "BOX 20",
-      "displaySize": "6.6\"",
-      "title": "SAM A34 5G",
-      "compatibleModels": [
-        "SAM A34 5G"
-      ],
-      "rawText": "A34 5G"
-    },
-    {
-      "id": "box-21",
-      "boxNumber": "BOX 21",
+      "id": "box-012",
+      "boxNumber": "BOX 012",
       "displaySize": "6.7\"",
-      "title": "IPHONE 14 PRO MAX",
+      "title": "iPhone 14 Pro Max",
+      "rawText": "IP 14 Pro Max",
       "compatibleModels": [
-        "IPHONE 14 PRO MAX"
-      ],
-      "rawText": "IPHONE 14 PRO MAX"
+        "iPhone 14 Pro Max"
+      ]
     },
     {
-      "id": "box-22",
-      "boxNumber": "BOX 22",
-      "displaySize": "6.6\"",
-      "title": "SAM A35 5G/A55 5G/M35 5G",
-      "compatibleModels": [
-        "SAM A35 5G",
-        "SAM A55 5G",
-        "SAM M35 5G"
-      ],
-      "rawText": "A35 5GA55 5G/M35 5G"
-    },
-    {
-      "id": "box-23",
-      "boxNumber": "BOX 23",
+      "id": "box-013",
+      "boxNumber": "BOX 013",
       "displaySize": "6.1\"",
-      "title": "IPHONE 15/IPHONE 16",
+      "title": "iPhone 15",
+      "rawText": "IP 15 / 16",
       "compatibleModels": [
-        "IPHONE 15",
-        "IPHONE 16"
-      ],
-      "rawText": "IPHONE 15/IP 16 6.1"
+        "iPhone 15",
+        "iPhone 16"
+      ]
     },
     {
-      "id": "box-24",
-      "boxNumber": "BOX 24",
-      "displaySize": "REVIEW REQUIRED",
-      "title": "SAM A51/A51 5G/A52/A52S 5G/A53 5G/M31S/S20 FE/S20 FE 5G/S20 FE 2022",
-      "compatibleModels": [
-        "SAM A51",
-        "SAM A51 5G",
-        "SAM A52",
-        "SAM A52S 5G",
-        "SAM A53 5G",
-        "SAM M31S",
-        "SAM S20 FE",
-        "SAM S20 FE 5G",
-        "SAM S20 FE 2022"
-      ],
-      "rawText": "A51/AS1 5G/A52/A52S 5G/A53 5G/M31S/S20FE/S20FE 5G/S20FE 2022"
-    },
-    {
-      "id": "box-25",
-      "boxNumber": "BOX 25",
+      "id": "box-014",
+      "boxNumber": "BOX 014",
       "displaySize": "6.7\"",
-      "title": "IPHONE 15 PLUS/IPHONE 16 PLUS",
+      "title": "iPhone 15 Plus",
+      "rawText": "IP 15 Plus / 16 Plus",
       "compatibleModels": [
-        "IPHONE 15 PLUS",
-        "IPHONE 16 PLUS"
-      ],
-      "rawText": "IPHONE 15 PLUS/IP 16 PLUS 6.7"
+        "iPhone 15 Plus",
+        "iPhone 16 Plus"
+      ]
     },
     {
-      "id": "box-26",
-      "boxNumber": "BOX 26",
-      "displaySize": "6.4\"",
-      "title": "SAM A54 5G/S23 FE 5G",
-      "compatibleModels": [
-        "SAM A54 5G",
-        "SAM S23 FE 5G"
-      ],
-      "rawText": "A54 5G/523 FE 5G"
-    },
-    {
-      "id": "box-27",
-      "boxNumber": "BOX 27",
+      "id": "box-015",
+      "boxNumber": "BOX 015",
       "displaySize": "6.1\"",
-      "title": "IPHONE 15 PRO",
+      "title": "iPhone 15 Pro",
+      "rawText": "IP 15 Pro",
       "compatibleModels": [
-        "IPHONE 15 PRO"
-      ],
-      "rawText": "IPHONE 15 PRO 6.1"
+        "iPhone 15 Pro"
+      ]
     },
     {
-      "id": "box-28",
-      "boxNumber": "BOX 28",
+      "id": "box-016",
+      "boxNumber": "BOX 016",
       "displaySize": "6.7\"",
-      "title": "SAM A70/A70S/A42 5G/M42 5G",
+      "title": "iPhone 15 Pro Max",
+      "rawText": "IP 15 Pro Max",
       "compatibleModels": [
-        "SAM A70",
-        "SAM A70S",
-        "SAM A42 5G",
-        "SAM M42 5G"
-      ],
-      "rawText": "A70/A705/A42 5G/M42 5G"
+        "iPhone 15 Pro Max"
+      ]
     },
     {
-      "id": "box-29",
-      "boxNumber": "BOX 29",
-      "displaySize": "6.7\"",
-      "title": "IPHONE 15 PRO MAX",
-      "compatibleModels": [
-        "IPHONE 15 PRO MAX"
-      ],
-      "rawText": "IPHONE 15 PRO MAX 6.7"
-    },
-    {
-      "id": "box-30",
-      "boxNumber": "BOX 30",
-      "displaySize": "REVIEW REQUIRED",
-      "title": "SAM A71/A71 5G/A73 5G/A81/A91/M51/M52 5G/M53 5G/M54 5G/M62/F54 5G/F62/S10 LITE/NOTE 10 LITE",
-      "compatibleModels": [
-        "SAM A71",
-        "SAM A71 5G",
-        "SAM A73 5G",
-        "SAM A81",
-        "SAM A91",
-        "SAM M51",
-        "SAM M52 5G",
-        "SAM M53 5G",
-        "SAM M54 5G",
-        "SAM M62",
-        "SAM F54 5G",
-        "SAM F62",
-        "SAM S10 LITE",
-        "SAM NOTE 10 LITE"
-      ],
-      "rawText": "A71/A71.5G/A73 5G/A81/A91/M51/M52 5G/M53 5G/M545G/M62/F54 /F62/510 LITE/ NOTE 10 LITE"
-    },
-    {
-      "id": "box-31",
-      "boxNumber": "BOX 31",
+      "id": "box-017",
+      "boxNumber": "BOX 017",
       "displaySize": "6.3\"",
-      "title": "IPHONE 16 PRO/IPHONE 17",
+      "title": "iPhone 16 Pro",
+      "rawText": "IP 16 Pro",
       "compatibleModels": [
-        "IPHONE 16 PRO",
-        "IPHONE 17"
-      ],
-      "rawText": "IPHONE 16 PRO/IP 176.3 (THICK GLUE)380胶"
+        "iPhone 16 Pro"
+      ]
     },
     {
-      "id": "box-32",
-      "boxNumber": "BOX 32",
+      "id": "box-018",
+      "boxNumber": "BOX 018",
+      "displaySize": "6.9\"",
+      "title": "iPhone 16 Pro Max",
+      "rawText": "IP 16 Pro Max",
+      "compatibleModels": [
+        "iPhone 16 Pro Max"
+      ]
+    },
+    {
+      "id": "box-019",
+      "boxNumber": "BOX 019",
+      "displaySize": "6.3\"",
+      "title": "iPhone 17",
+      "rawText": "IP 17 / 17 Pro",
+      "compatibleModels": [
+        "iPhone 17",
+        "iPhone 17 Pro"
+      ]
+    },
+    {
+      "id": "box-020",
+      "boxNumber": "BOX 020",
+      "displaySize": "6.9\"",
+      "title": "iPhone 17 Pro Max",
+      "rawText": "IP 17 Pro Max",
+      "compatibleModels": [
+        "iPhone 17 Pro Max"
+      ]
+    },
+    {
+      "id": "box-021",
+      "boxNumber": "BOX 021",
+      "displaySize": "6.3\"",
+      "title": "Google Pixel 4XL",
+      "rawText": "Pixel 4XL",
+      "compatibleModels": [
+        "Google Pixel 4XL"
+      ]
+    },
+    {
+      "id": "box-022",
+      "boxNumber": "BOX 022",
       "displaySize": "6.0\"",
-      "title": "SAM J4 PLUS/J6 PLUS/J4 CORE",
+      "title": "Google Pixel 5",
+      "rawText": "Pixel 5",
       "compatibleModels": [
-        "SAM J4 PLUS",
-        "SAM J6 PLUS",
-        "SAM J4 CORE"
-      ],
-      "rawText": "14 PLUS/J6 PLUS/14 CORE"
+        "Google Pixel 5"
+      ]
     },
     {
-      "id": "box-33",
-      "boxNumber": "BOX 33",
-      "displaySize": "6.9\"",
-      "title": "IPHONE 16 PRO MAX",
-      "compatibleModels": [
-        "IPHONE 16 PRO MAX"
-      ],
-      "rawText": "IPHONE 16 PRO MAX 6.9 (THICK GLUE 380"
-    },
-    {
-      "id": "box-34",
-      "boxNumber": "BOX 34",
-      "displaySize": "6.4\"",
-      "title": "SAM S21 FE 5G",
-      "compatibleModels": [
-        "SAM S21 FE 5G"
-      ],
-      "rawText": "S21FE 5G"
-    },
-    {
-      "id": "box-35",
-      "boxNumber": "BOX 35",
-      "displaySize": "6.6\"",
-      "title": "IPHONE 17 AIR",
-      "compatibleModels": [
-        "IPHONE 17 AIR"
-      ],
-      "rawText": "IPHONE 17 AIR 6.6(THICK GLUE)380"
-    },
-    {
-      "id": "box-36",
-      "boxNumber": "BOX 36",
-      "displaySize": "REVIEW REQUIRED",
-      "title": "SAM A27/A36 5G/A37/A56 5G/A57/M36 5G/M47 5G/M56 5G/F56 5G/S24 FE 5G/S25 FE",
-      "compatibleModels": [
-        "SAM A27",
-        "SAM A36 5G",
-        "SAM A37",
-        "SAM A56 5G",
-        "SAM A57",
-        "SAM M36 5G",
-        "SAM M47 5G",
-        "SAM M56 5G",
-        "SAM F56 5G",
-        "SAM S24 FE 5G",
-        "SAM S25 FE"
-      ],
-      "rawText": "SAM A27/A36 5G/A37/A56 5G/A57/M36 5G/M47 5G/M56 5G/F56 5G/SAM S24FE 5G/SAM S25FE新图纸"
-    },
-    {
-      "id": "box-37",
-      "boxNumber": "BOX 37",
-      "displaySize": "6.3\"",
-      "title": "IPHONE 17 PRO",
-      "compatibleModels": [
-        "IPHONE 17 PRO"
-      ],
-      "rawText": "IPHONE 17 PRO 6.3 (THICK GLUE)380胶"
-    },
-    {
-      "id": "box-38",
-      "boxNumber": "BOX 38",
-      "displaySize": "7.6\"",
-      "title": "SAM Z FOLD 4/Z FOLD 5",
-      "compatibleModels": [
-        "SAM Z FOLD 4",
-        "SAM Z FOLD 5"
-      ],
-      "rawText": "SAM Z FOLD4/FOLD 5"
-    },
-    {
-      "id": "box-39",
-      "boxNumber": "BOX 39",
-      "displaySize": "6.9\"",
-      "title": "IPHONE 17 PRO MAX",
-      "compatibleModels": [
-        "IPHONE 17 PRO MAX"
-      ],
-      "rawText": "IPHONE 17 PRO MAX 6.9 (THICK GLUE)380胶"
-    },
-    {
-      "id": "box-40",
-      "boxNumber": "BOX 40",
-      "displaySize": "7.6\"",
-      "title": "SAM Z FOLD 6",
-      "compatibleModels": [
-        "SAM Z FOLD 6"
-      ],
-      "rawText": "SAM Z FOLD 6"
-    },
-    {
-      "id": "box-41",
-      "boxNumber": "BOX 41",
-      "displaySize": "6.3\"",
-      "title": "IPHONE 18 PRO",
-      "compatibleModels": [
-        "IPHONE 18 PRO"
-      ],
-      "rawText": "IPHONE 18 PRO 6.3 (THICK GLUE)390"
-    },
-    {
-      "id": "box-42",
-      "boxNumber": "BOX 42",
-      "displaySize": "7.6\"",
-      "title": "SAM Z FOLD 7",
-      "compatibleModels": [
-        "SAM Z FOLD 7"
-      ],
-      "rawText": "SAM Z FOLD 7"
-    },
-    {
-      "id": "box-43",
-      "boxNumber": "BOX 43",
-      "displaySize": "6.9\"",
-      "title": "IPHONE 18 PRO MAX",
-      "compatibleModels": [
-        "IPHONE 18 PRO MAX"
-      ],
-      "rawText": "IPHONE 18 PRO MAX 6.9 (THICK GLUE)390"
-    },
-    {
-      "id": "box-44",
-      "boxNumber": "BOX 44",
-      "displaySize": "8.0\"",
-      "title": "SAM Z FOLD 8 WIDE",
-      "compatibleModels": [
-        "SAM Z FOLD 8 WIDE"
-      ],
-      "rawText": "SAM Z FOLD 8 WIDE"
-    },
-    {
-      "id": "box-45",
-      "boxNumber": "BOX 45",
-      "displaySize": "6.71\"",
-      "title": "REDMI 10C/10/10 POWER/11A/12C/A3/A3X",
-      "compatibleModels": [
-        "REDMI 10C",
-        "REDMI 10",
-        "REDMI 10 POWER",
-        "REDMI 11A",
-        "REDMI 12C",
-        "REDMI A3",
-        "REDMI A3X"
-      ],
-      "rawText": "REDMI 10C/RM 10(INDIA)/RM 10 POWER/RM 11A/RM 12C/RM A3/RM A3X"
-    },
-    {
-      "id": "box-46",
-      "boxNumber": "BOX 46",
-      "displaySize": "8.0\"",
-      "title": "SAM Z FOLD 8 ULTRA",
-      "compatibleModels": [
-        "SAM Z FOLD 8 ULTRA"
-      ],
-      "rawText": "SAM Z FOLD 8 ULTRA"
-    },
-    {
-      "id": "box-47",
-      "boxNumber": "BOX 47",
-      "displaySize": "6.5\"",
-      "title": "REDMI 10 PRIME/10/NOTE 10 5G/NOTE 10T 5G/NOTE 11 4G/NOTE 11SE 5G",
-      "compatibleModels": [
-        "REDMI 10 PRIME",
-        "REDMI 10",
-        "REDMI NOTE 10 5G",
-        "REDMI NOTE 10T 5G",
-        "REDMI NOTE 11 4G",
-        "REDMI NOTE 11SE 5G"
-      ],
-      "rawText": "REDMI 10 PRIME/RM 10/RM NOTE 10 5G/RM NOTE 10T 5G/RM NOTE 11 4G (2021)/RM NOTE 115E 5G"
-    },
-    {
-      "id": "box-48",
-      "boxNumber": "BOX 48",
-      "displaySize": "6.53\"",
-      "title": "SAM A20S/REDMI 9",
-      "compatibleModels": [
-        "SAM A20S",
-        "REDMI 9"
-      ],
-      "rawText": "SAM A205(REDMI 9)"
-    },
-    {
-      "id": "box-49",
-      "boxNumber": "BOX 49",
-      "displaySize": "6.7\"",
-      "title": "SAM A05/A06 4G/A06 5G/A07 5G/M05/M06/M07 4G/M17E/F07E 5G/F05/F06 5G/F07 4G/REDMI 13C",
-      "compatibleModels": [
-        "SAM A05",
-        "SAM A06 4G",
-        "SAM A06 5G",
-        "SAM A07 5G",
-        "SAM M05",
-        "SAM M06",
-        "SAM M07 4G",
-        "SAM M17E",
-        "SAM F07E 5G",
-        "SAM F05",
-        "SAM F06 5G",
-        "SAM F07 4G",
-        "REDMI 13C"
-      ],
-      "rawText": "SAM A05/A06 4G/A06 5G/A07 5G/M05/M06/M07 4G/M17E/F07E SG/F05/F06 56/F07 4G(REDMI 13C)"
-    },
-    {
-      "id": "box-50",
-      "boxNumber": "BOX 50",
-      "displaySize": "6.79\"",
-      "title": "REDMI 12 4G/12 5G/13 4G/13 5G/13X 4G/NOTE 12R/NOTE 13R",
-      "compatibleModels": [
-        "REDMI 12 4G",
-        "REDMI 12 5G",
-        "REDMI 13 4G",
-        "REDMI 13 5G",
-        "REDMI 13X 4G",
-        "REDMI NOTE 12R",
-        "REDMI NOTE 13R"
-      ],
-      "rawText": "REDMI 12 4G/RM 12 5G/RM 13 4G/RM 13 5G/RM 13X 4G/RM NOTE 12R/RM NOTE 13R"
-    },
-    {
-      "id": "box-51",
-      "boxNumber": "BOX 51",
-      "displaySize": "6.7\"",
-      "title": "SAM A72/A80/A90/M55/M55S/C55/F55/REDMI K30",
-      "compatibleModels": [
-        "SAM A72",
-        "SAM A80",
-        "SAM A90",
-        "SAM M55",
-        "SAM M55S",
-        "SAM C55",
-        "SAM F55",
-        "REDMI K30"
-      ],
-      "rawText": "SAM A72/A80/A90/M55/M55S/C55/F55 (REDMI K30)"
-    },
-    {
-      "id": "box-52",
-      "boxNumber": "BOX 52",
-      "displaySize": "6.74\"",
-      "title": "REDMI 13C 4G/13C 5G/13R",
-      "compatibleModels": [
-        "REDMI 13C 4G",
-        "REDMI 13C 5G",
-        "REDMI 13R"
-      ],
-      "rawText": "REDMI 130 4G/RM 13C 5G/RM 13R"
-    },
-    {
-      "id": "box-53",
-      "boxNumber": "BOX 53",
+      "id": "box-023",
+      "boxNumber": "BOX 023",
       "displaySize": "6.2\"",
-      "title": "SAM A10S/M10/M20/A10/M01S/VIVO Y90",
+      "title": "Google Pixel 5XL",
+      "rawText": "Pixel 5XL",
       "compatibleModels": [
-        "SAM A10S",
-        "SAM M10",
-        "SAM M20",
-        "SAM A10",
-        "SAM M01S",
-        "VIVO Y90"
-      ],
-      "rawText": "SAM A105/M10/M20/A10/M015(VIVO Y90)"
+        "Google Pixel 5XL"
+      ]
     },
     {
-      "id": "box-54",
-      "boxNumber": "BOX 54",
-      "displaySize": "6.88\"",
-      "title": "REDMI 14C 4G/14C 5G/14R 5G/17C/A3 PRO 4G/A4 5G/A5 4G/A7 4G",
-      "compatibleModels": [
-        "REDMI 14C 4G",
-        "REDMI 14C 5G",
-        "REDMI 14R 5G",
-        "REDMI 17C",
-        "REDMI A3 PRO 4G",
-        "REDMI A4 5G",
-        "REDMI A5 4G",
-        "REDMI A7 4G"
-      ],
-      "rawText": "REDMI 14C 4G/RM 14C 5G/RM 14R 5G/RM 17C/RM A3 PRO 4G/RM A4 SG/RM A5 4G (Global)/RM A7 4G"
-    },
-    {
-      "id": "box-55",
-      "boxNumber": "BOX 55",
-      "displaySize": "6.4\"",
-      "title": "SAM A11/M11/OPPO F11 PRO",
-      "compatibleModels": [
-        "SAM A11",
-        "SAM M11",
-        "OPPO F11 PRO"
-      ],
-      "rawText": "SAM A11/M11(OPPO F11 PRO)"
-    },
-    {
-      "id": "box-56",
-      "boxNumber": "BOX 56",
-      "displaySize": "6.88\"",
-      "title": "REDMI 15 4G/15 5G",
-      "compatibleModels": [
-        "REDMI 15 4G",
-        "REDMI 15 5G"
-      ],
-      "rawText": "REDMI 15 4G (Global) /RM 15 5G (Global)"
-    },
-    {
-      "id": "box-57",
-      "boxNumber": "BOX 57",
-      "displaySize": "6.5\"",
-      "title": "SAM F52 5G/A21S/OPPO A53 4G",
-      "compatibleModels": [
-        "SAM F52 5G",
-        "SAM A21S",
-        "OPPO A53 4G"
-      ],
-      "rawText": "SAM F52 5G/A215 (OPPO A53 4G)"
-    },
-    {
-      "id": "box-58",
-      "boxNumber": "BOX 58",
-      "displaySize": "6.88\"",
-      "title": "REDMI 15C 4G/15C 5G/15A 5G/17 5G/R70/R70M/A7 PRO 4G/A7 PRO 5G",
-      "compatibleModels": [
-        "REDMI 15C 4G",
-        "REDMI 15C 5G",
-        "REDMI 15A 5G",
-        "REDMI 17 5G",
-        "REDMI R70",
-        "REDMI R70M",
-        "REDMI A7 PRO 4G",
-        "REDMI A7 PRO 5G"
-      ],
-      "rawText": "REDMI 15C 4G (Global)/RM 15C 5G(Global)/RM 15A 5G/RM 17 5G/RM R70/RM R70M/RM A7 PRO 4G/RM A7 PRO SG"
-    },
-    {
-      "id": "box-59",
-      "boxNumber": "BOX 59",
-      "displaySize": "6.2\"",
-      "title": "SAM S21",
-      "compatibleModels": [
-        "SAM S21"
-      ],
-      "rawText": "SAM S21(玻璃0.25MM)"
-    },
-    {
-      "id": "box-60",
-      "boxNumber": "BOX 60",
-      "displaySize": "6.88\"",
-      "title": "REDMI 15C 4G EU",
-      "compatibleModels": [
-        "REDMI 15C 4G EU"
-      ],
-      "rawText": "REDMI 150 4G(EU)"
-    },
-    {
-      "id": "box-61",
-      "boxNumber": "BOX 61",
-      "displaySize": "6.7\"",
-      "title": "SAM S21 PLUS",
-      "compatibleModels": [
-        "SAM S21 PLUS"
-      ],
-      "rawText": "SAM S21 PLUS(玻璃0.25MM)"
-    },
-    {
-      "id": "box-62",
-      "boxNumber": "BOX 62",
-      "displaySize": "6.88\"",
-      "title": "REDMI 15 4G EU/15 5G EU",
-      "compatibleModels": [
-        "REDMI 15 4G EU",
-        "REDMI 15 5G EU"
-      ],
-      "rawText": "REDMI 15 4G(EU)/RM 15 5G(EU)"
-    },
-    {
-      "id": "box-63",
-      "boxNumber": "BOX 63",
+      "id": "box-024",
+      "boxNumber": "BOX 024",
       "displaySize": "6.1\"",
-      "title": "SAM S22/S23",
+      "title": "Google Pixel 6A",
+      "rawText": "Pixel 6A / 7A",
       "compatibleModels": [
-        "SAM S22",
-        "SAM S23"
-      ],
-      "rawText": "SAM S22/S23(玻璃0.25MM)"
+        "Google Pixel 6A",
+        "Google Pixel 7A"
+      ]
     },
     {
-      "id": "box-64",
-      "boxNumber": "BOX 64",
-      "displaySize": "6.53\"",
-      "title": "REDMI 9/9 PRIME",
-      "compatibleModels": [
-        "REDMI 9",
-        "REDMI 9 PRIME"
-      ],
-      "rawText": "REDMI 9/RM 9 PRIME"
-    },
-    {
-      "id": "box-65",
-      "boxNumber": "BOX 65",
-      "displaySize": "6.6\"",
-      "title": "SAM S22 PLUS/S23 PLUS",
-      "compatibleModels": [
-        "SAM S22 PLUS",
-        "SAM S23 PLUS"
-      ],
-      "rawText": "SAM S22 PLUS/S23 PLUS(玻璃0.25MM)"
-    },
-    {
-      "id": "box-66",
-      "boxNumber": "BOX 66",
-      "displaySize": "6.53\"",
-      "title": "REDMI 9A/9C/9I/9 ACTIV/10A 4G",
-      "compatibleModels": [
-        "REDMI 9A",
-        "REDMI 9C",
-        "REDMI 9I",
-        "REDMI 9 ACTIV",
-        "REDMI 10A 4G"
-      ],
-      "rawText": "REDMI 9A/RM 9C/RM 9I/RM 9 ACTIV/RM 10A 4G"
-    },
-    {
-      "id": "box-67",
-      "boxNumber": "BOX 67",
-      "displaySize": "6.2\"",
-      "title": "SAM S24/S25",
-      "compatibleModels": [
-        "SAM S24",
-        "SAM S25"
-      ],
-      "rawText": "SAM S24/SAM 525(玻璃0.25MM)"
-    },
-    {
-      "id": "box-68",
-      "boxNumber": "BOX 68",
-      "displaySize": "6.88\"",
-      "title": "REDMI A5 4G EU",
-      "compatibleModels": [
-        "REDMI A5 4G EU"
-      ],
-      "rawText": "REDMI AS 4G (EU)"
-    },
-    {
-      "id": "box-69",
-      "boxNumber": "BOX 69",
-      "displaySize": "6.7\"",
-      "title": "SAM S24 PLUS/S25 PLUS",
-      "compatibleModels": [
-        "SAM S24 PLUS",
-        "SAM S25 PLUS"
-      ],
-      "rawText": "SAM S24 PLUS/SAM S25 PLUS(玻璃0.25MM)"
-    },
-    {
-      "id": "box-70",
-      "boxNumber": "BOX 70",
-      "displaySize": "6.67\"",
-      "title": "REDMI K30/K30 5G/K30S/K30 PRO/NOTE 9S/NOTE 9 PRO/NOTE 9 PRO MAX/NOTE 10 LITE",
-      "compatibleModels": [
-        "REDMI K30",
-        "REDMI K30 5G",
-        "REDMI K30S",
-        "REDMI K30 PRO",
-        "REDMI NOTE 9S",
-        "REDMI NOTE 9 PRO",
-        "REDMI NOTE 9 PRO MAX",
-        "REDMI NOTE 10 LITE"
-      ],
-      "rawText": "REDMI K30/RM 5G/RM K305/RM K30 PRO/RM NOTE 95/RM NOTE 9 PRO/RM NOTE 9 PRO MAX/RM NOTE 10 LITE"
-    },
-    {
-      "id": "box-71",
-      "boxNumber": "BOX 71",
-      "displaySize": "6.8\"",
-      "title": "SAM S24 ULTRA",
-      "compatibleModels": [
-        "SAM S24 ULTRA"
-      ],
-      "rawText": "SAM S24 ULTRA(玻璃0.25MM)"
-    },
-    {
-      "id": "box-72",
-      "boxNumber": "BOX 72",
-      "displaySize": "6.67\"",
-      "title": "REDMI K70/K70E/K70 PRO/K70 ULTRA/K80/K80 PRO",
-      "compatibleModels": [
-        "REDMI K70",
-        "REDMI K70E",
-        "REDMI K70 PRO",
-        "REDMI K70 ULTRA",
-        "REDMI K80",
-        "REDMI K80 PRO"
-      ],
-      "rawText": "REDMI K70/RM K70E/RM K70 PRO/RM K70 ULTRA/RM K80/RM K80 PRO"
-    },
-    {
-      "id": "box-73",
-      "boxNumber": "BOX 73",
-      "displaySize": "6.9\"",
-      "title": "SAM S25 ULTRA",
-      "compatibleModels": [
-        "SAM S25 ULTRA"
-      ],
-      "rawText": "SAM S25 ULTRA(玻璃0.25MM)"
-    },
-    {
-      "id": "box-74",
-      "boxNumber": "BOX 74",
-      "displaySize": "6.43\"",
-      "title": "REDMI NOTE 10S/NOTE 10 4G/NOTE 11/NOTE 11S/NOTE 11SE/NOTE 12S",
-      "compatibleModels": [
-        "REDMI NOTE 10S",
-        "REDMI NOTE 10 4G",
-        "REDMI NOTE 11",
-        "REDMI NOTE 11S",
-        "REDMI NOTE 11SE",
-        "REDMI NOTE 12S"
-      ],
-      "rawText": "REDMI NOTE 105/RM NOTE 10 4G/RM NOTE 11 (2022)/RM NOTE 115 2022/RM NOTE 11SE(INDIA)/RM NOTE 125"
-    },
-    {
-      "id": "box-75",
-      "boxNumber": "BOX 75",
-      "displaySize": "6.7\"",
-      "title": "SAM S25 EDGE 5G",
-      "compatibleModels": [
-        "SAM S25 EDGE 5G"
-      ],
-      "rawText": "SAM 525 EDGE 5G(玻璃0.25MM)"
-    },
-    {
-      "id": "box-76",
-      "boxNumber": "BOX 76",
-      "displaySize": "6.3\"",
-      "title": "SAM S26/S26 PRO",
-      "compatibleModels": [
-        "SAM S26",
-        "SAM S26 PRO"
-      ],
-      "rawText": "SAM S26/526 PRO(玻璃0.25MM)"
-    },
-    {
-      "id": "box-77",
-      "boxNumber": "BOX 77",
-      "displaySize": "6.7\"",
-      "title": "SAM S26 PLUS/S26 EDGE",
-      "compatibleModels": [
-        "SAM S26 PLUS",
-        "SAM S26 EDGE"
-      ],
-      "rawText": "SAM S26 PLUS/S26 EDGE(玻璃0.25MM)"
-    },
-    {
-      "id": "box-78",
-      "boxNumber": "BOX 78",
-      "displaySize": "6.67\"",
-      "title": "REDMI NOTE 10 PRO/NOTE 10 PRO MAX/NOTE 11 PRO/NOTE 11 PRO+/NOTE 11E PRO/NOTE 13 4G/NOTE 14 4G/NOTE 14 5G/NOTE 14 SE/K40/K40S/K40 PRO+/K40 PRO/K50/K50 PRO/K60E",
-      "compatibleModels": [
-        "REDMI NOTE 10 PRO",
-        "REDMI NOTE 10 PRO MAX",
-        "REDMI NOTE 11 PRO",
-        "REDMI NOTE 11 PRO+",
-        "REDMI NOTE 11E PRO",
-        "REDMI NOTE 13 4G",
-        "REDMI NOTE 14 4G",
-        "REDMI NOTE 14 5G",
-        "REDMI NOTE 14 SE",
-        "REDMI K40",
-        "REDMI K40S",
-        "REDMI K40 PRO+",
-        "REDMI K40 PRO",
-        "REDMI K50",
-        "REDMI K50 PRO",
-        "REDMI K60E"
-      ],
-      "rawText": "REDMI NOTE 10 PRO/RM NOTE 10 PRO MAX/RM NOTE 11 PRO/RM NOTE 11 PRO+/RM NOTE 11E PRO/RM NOTE 13 4G/RM NOTE 14 (GLOBAL) 4G/RM NOTE 14 (GLOBAL) 5G/RM NOTE 14 (CHINA)/NOTE 14 SE/RM K40/RM K405/RM K40 PRO+/RM K40 PRO/RM KSO/RM K50 PRO/RM K60E"
-    },
-    {
-      "id": "box-79",
-      "boxNumber": "BOX 79",
-      "displaySize": "6.9\"",
-      "title": "SAM S26 ULTRA",
-      "compatibleModels": [
-        "SAM S26 ULTRA"
-      ],
-      "rawText": "SAM S26 ULTRA(玻璃0.25MM)"
-    },
-    {
-      "id": "box-80",
-      "boxNumber": "BOX 80",
-      "displaySize": "6.6\"",
-      "title": "REDMI NOTE 11 5G/NOTE 11S 5G/NOTE 11T 5G",
-      "compatibleModels": [
-        "REDMI NOTE 11 5G",
-        "REDMI NOTE 11S 5G",
-        "REDMI NOTE 11T 5G"
-      ],
-      "rawText": "REDMI NOTE 115G (China) /RM NOTE 11S 5G/RM NOTE 11T 5G"
-    },
-    {
-      "id": "box-81",
-      "boxNumber": "BOX 81",
-      "displaySize": "6.5\"",
-      "title": "OPPO A53 4G/A11S/A32 4G/A33 2020/A36 4G/A53S 4G/A54 4G/A55 4G/A76 4G/A92S 5G/A96 4G/K10 CHINA/K10X 5G",
-      "compatibleModels": [
-        "OPPO A53 4G",
-        "OPPO A11S",
-        "OPPO A32 4G",
-        "OPPO A33 2020",
-        "OPPO A36 4G",
-        "OPPO A53S 4G",
-        "OPPO A54 4G",
-        "OPPO A55 4G",
-        "OPPO A76 4G",
-        "OPPO A92S 5G",
-        "OPPO A96 4G",
-        "OPPO K10 CHINA",
-        "OPPO K10X 5G"
-      ],
-      "rawText": "OPPO A53 4G/A11S/A32 4G/A33 2020/A36 4G/A53S 4G/A54 4G/A55 4G/A76 4G/A92S 5G/A96 4G/K10 CHINA/K10X 5G"
-    },
-    {
-      "id": "box-82",
-      "boxNumber": "BOX 82",
-      "displaySize": "6.6\"",
-      "title": "REDMI NOTE 11T PRO/NOTE 11T PRO+/NOTE 12T PRO/K50I",
-      "compatibleModels": [
-        "REDMI NOTE 11T PRO",
-        "REDMI NOTE 11T PRO+",
-        "REDMI NOTE 12T PRO",
-        "REDMI K50I"
-      ],
-      "rawText": "REDMI NOTE 11T PRO/RM NOTE 11T PRO+/RM NOTE 12T PRO/RM K50"
-    },
-    {
-      "id": "box-83",
-      "boxNumber": "BOX 83",
+      "id": "box-025",
+      "boxNumber": "BOX 025",
       "displaySize": "6.4\"",
-      "title": "OPPO A91/A73 4G/F15/F17/RENO 3 4G",
+      "title": "Google Pixel 6",
+      "rawText": "Pixel 6",
+      "compatibleModels": [
+        "Google Pixel 6"
+      ]
+    },
+    {
+      "id": "box-026",
+      "boxNumber": "BOX 026",
+      "displaySize": "6.3\"",
+      "title": "Google Pixel 7",
+      "rawText": "Pixel 7",
+      "compatibleModels": [
+        "Google Pixel 7"
+      ]
+    },
+    {
+      "id": "box-027",
+      "boxNumber": "BOX 027",
+      "displaySize": "6.2\"",
+      "title": "Google Pixel 8",
+      "rawText": "Pixel 8",
+      "compatibleModels": [
+        "Google Pixel 8"
+      ]
+    },
+    {
+      "id": "box-028",
+      "boxNumber": "BOX 028",
+      "displaySize": "6.1\"",
+      "title": "Google Pixel 8A",
+      "rawText": "Pixel 8A",
+      "compatibleModels": [
+        "Google Pixel 8A"
+      ]
+    },
+    {
+      "id": "box-029",
+      "boxNumber": "BOX 029",
+      "displaySize": "6.7\"",
+      "title": "Google Pixel 8 Pro",
+      "rawText": "Pixel 8 Pro",
+      "compatibleModels": [
+        "Google Pixel 8 Pro"
+      ]
+    },
+    {
+      "id": "box-030",
+      "boxNumber": "BOX 030",
+      "displaySize": "6.3\"",
+      "title": "Google Pixel 9 Pro",
+      "rawText": "Pixel 9 Pro",
+      "compatibleModels": [
+        "Google Pixel 9 Pro"
+      ]
+    },
+    {
+      "id": "box-031",
+      "boxNumber": "BOX 031",
+      "displaySize": "6.3\"",
+      "title": "Google Pixel 9A",
+      "rawText": "Pixel 9A",
+      "compatibleModels": [
+        "Google Pixel 9A"
+      ]
+    },
+    {
+      "id": "box-032",
+      "boxNumber": "BOX 032",
+      "displaySize": "6.8\"",
+      "title": "Google Pixel 9 Pro XL",
+      "rawText": "Pixel 9 Pro XL",
+      "compatibleModels": [
+        "Google Pixel 9 Pro XL"
+      ]
+    },
+    {
+      "id": "box-033",
+      "boxNumber": "BOX 033",
+      "displaySize": "6.3\"",
+      "title": "Google Pixel 9",
+      "rawText": "Pixel 9",
+      "compatibleModels": [
+        "Google Pixel 9"
+      ]
+    },
+    {
+      "id": "box-034",
+      "boxNumber": "BOX 034",
+      "displaySize": "6.3\"",
+      "title": "Google Pixel 10",
+      "rawText": "Pixel 10",
+      "compatibleModels": [
+        "Google Pixel 10"
+      ]
+    },
+    {
+      "id": "box-035",
+      "boxNumber": "BOX 035",
+      "displaySize": "6.3\"",
+      "title": "Google Pixel 10 Pro",
+      "rawText": "Pixel 10 Pro",
+      "compatibleModels": [
+        "Google Pixel 10 Pro"
+      ]
+    },
+    {
+      "id": "box-036",
+      "boxNumber": "BOX 036",
+      "displaySize": "6.8\"",
+      "title": "Google Pixel 10 Pro XL",
+      "rawText": "Pixel 10 Pro XL",
+      "compatibleModels": [
+        "Google Pixel 10 Pro XL"
+      ]
+    },
+    {
+      "id": "box-037",
+      "boxNumber": "BOX 037",
+      "displaySize": "6.3\"",
+      "title": "Google Pixel 10A",
+      "rawText": "Pixel 10A",
+      "compatibleModels": [
+        "Google Pixel 10A"
+      ]
+    },
+    {
+      "id": "box-038",
+      "boxNumber": "BOX 038",
+      "displaySize": "Mixed",
+      "title": "S8",
+      "rawText": "S8 / S9 / S8+ / S9+ / S10",
+      "compatibleModels": [
+        "S8",
+        "S9",
+        "S8+",
+        "S9+",
+        "S10"
+      ]
+    },
+    {
+      "id": "box-039",
+      "boxNumber": "BOX 039",
+      "displaySize": "Mixed",
+      "title": "S20",
+      "rawText": "S20 / S20+ / S20 Ultra / S20 FE",
+      "compatibleModels": [
+        "S20",
+        "S20+",
+        "S20 Ultra",
+        "S20 FE"
+      ]
+    },
+    {
+      "id": "box-040",
+      "boxNumber": "BOX 040",
+      "displaySize": "Mixed",
+      "title": "S21",
+      "rawText": "S21 / S21+ / S21 Ultra / S21 FE",
+      "compatibleModels": [
+        "S21",
+        "S21+",
+        "S21 Ultra",
+        "S21 FE"
+      ]
+    },
+    {
+      "id": "box-041",
+      "boxNumber": "BOX 041",
+      "displaySize": "Mixed",
+      "title": "S22",
+      "rawText": "S22 / S23 / S22+ / S23+",
+      "compatibleModels": [
+        "S22",
+        "S23",
+        "S22+",
+        "S23+"
+      ]
+    },
+    {
+      "id": "box-042",
+      "boxNumber": "BOX 042",
+      "displaySize": "Mixed",
+      "title": "S22 Ultra",
+      "rawText": "S22 Ultra / S23 Ultra",
+      "compatibleModels": [
+        "S22 Ultra",
+        "S23 Ultra"
+      ]
+    },
+    {
+      "id": "box-043",
+      "boxNumber": "BOX 043",
+      "displaySize": "Mixed",
+      "title": "S24",
+      "rawText": "S24 / S24+ / S24 Ultra",
+      "compatibleModels": [
+        "S24",
+        "S24+",
+        "S24 Ultra"
+      ]
+    },
+    {
+      "id": "box-044",
+      "boxNumber": "BOX 044",
+      "displaySize": "Mixed",
+      "title": "S25",
+      "rawText": "S25 / S25+ / S25 Ultra",
+      "compatibleModels": [
+        "S25",
+        "S25+",
+        "S25 Ultra"
+      ]
+    },
+    {
+      "id": "box-045",
+      "boxNumber": "BOX 045",
+      "displaySize": "Mixed",
+      "title": "S26",
+      "rawText": "S26 / S26+ / S26 Ultra",
+      "compatibleModels": [
+        "S26",
+        "S26+",
+        "S26 Ultra"
+      ]
+    },
+    {
+      "id": "box-046",
+      "boxNumber": "BOX 046",
+      "displaySize": "Mixed",
+      "title": "Samsung Galaxy A71",
+      "rawText": "SAM A71 / A20 / A21S / A71 5G / A72 / A73 / A80 / A81 / A90 / A91 / M51 / M52 / M53 / M55 / M55s / M62 / S10 Lite / Note 10 Lite / F54 / F56 / F62 / C55\nRedmi: K30 / K30 Pro / K30 Ultra / K40 / K40 Pro / K40 Pro+ / K50 / K50 Pro / K60 / K60 Pro / K60E / Note 9 Pro / 9 Pro Max / 9S / Note 10 Pro / 10 Pro Max / 11 / 11 Pro / 11 Pro+ / Note 12 / Note 12 Pro / Note 12 Pro+ / 12 Explorer / Note 13 / Note 14 / Note 14 SE\nHuawei: Y9a / Nova 8i / Honor 50 Lite\nOPPO: A76 / A36 / A53 / A54 / A55 / A96 / K10 / K10 China / K10X",
+      "compatibleModels": [
+        "Samsung Galaxy A71",
+        "Samsung Galaxy A20",
+        "Samsung Galaxy A21S",
+        "Samsung Galaxy A71 5G",
+        "Samsung Galaxy A72",
+        "Samsung Galaxy A73",
+        "Samsung Galaxy A80",
+        "Samsung Galaxy A81",
+        "Samsung Galaxy A90",
+        "Samsung Galaxy A91",
+        "Samsung Galaxy M51",
+        "Samsung Galaxy M52",
+        "Samsung Galaxy M53",
+        "Samsung Galaxy M55",
+        "Samsung Galaxy M55s",
+        "Samsung Galaxy M62",
+        "Samsung Galaxy S10 Lite",
+        "Samsung Note 10 Lite",
+        "Samsung Galaxy F54",
+        "Samsung Galaxy F56",
+        "Samsung Galaxy F62",
+        "Samsung C55",
+        "Redmi K30",
+        "Redmi K30 Pro",
+        "Redmi K30 Ultra",
+        "Redmi K40",
+        "Redmi K40 Pro",
+        "Redmi K40 Pro+",
+        "Redmi K50",
+        "Redmi K50 Pro",
+        "Redmi K60",
+        "Redmi K60 Pro",
+        "Redmi K60E",
+        "Redmi Note 9 Pro",
+        "Redmi 9 Pro Max",
+        "Redmi 9S",
+        "Redmi Note 10 Pro",
+        "Redmi 10 Pro Max",
+        "Redmi 11",
+        "Redmi 11 Pro",
+        "Redmi 11 Pro+",
+        "Redmi Note 12",
+        "Redmi Note 12 Pro",
+        "Redmi Note 12 Pro+",
+        "Redmi 12 Explorer",
+        "Redmi Note 13",
+        "Redmi Note 14",
+        "Redmi Note 14 SE",
+        "Huawei Y9a",
+        "Huawei Nova 8i",
+        "Honor 50 Lite",
+        "OPPO A76",
+        "OPPO A36",
+        "OPPO A53",
+        "OPPO A54",
+        "OPPO A55",
+        "OPPO A96",
+        "OPPO K10",
+        "OPPO K10 China",
+        "OPPO K10X"
+      ]
+    },
+    {
+      "id": "box-047",
+      "boxNumber": "BOX 047",
+      "displaySize": "6.7\"",
+      "title": "Samsung Galaxy A16",
+      "rawText": "SAM A16 / A14 / A26 / M16 / M86 / F16 / F17 / F96",
+      "compatibleModels": [
+        "Samsung Galaxy A16",
+        "Samsung Galaxy A14",
+        "Samsung Galaxy A26",
+        "Samsung Galaxy M16",
+        "Samsung Galaxy M86",
+        "Samsung Galaxy F16",
+        "Samsung Galaxy F17",
+        "Samsung Galaxy F96"
+      ]
+    },
+    {
+      "id": "box-048",
+      "boxNumber": "BOX 048",
+      "displaySize": "6.7\"",
+      "title": "Samsung Galaxy A05",
+      "rawText": "SAM A05 / A06 / M05 / F05 / A07 / A05S\nRedmi: 13R / 13C / A3 / Poco C65 / Poco M6",
+      "compatibleModels": [
+        "Samsung Galaxy A05",
+        "Samsung Galaxy A06",
+        "Samsung Galaxy M05",
+        "Samsung Galaxy F05",
+        "Samsung Galaxy A07",
+        "Samsung Galaxy A05S",
+        "Redmi 13R",
+        "Redmi 13C",
+        "Redmi A3",
+        "POCO C65",
+        "POCO M6"
+      ]
+    },
+    {
+      "id": "box-049",
+      "boxNumber": "BOX 049",
+      "displaySize": "6.67\"",
+      "title": "Redmi Note 10",
+      "rawText": "Redmi Note 10 / 10 Pro / 10 Pro Max / 11 / 11 Pro / 11 Pro+ / 11E Pro / Note 13 / 13 Pro / Note 14 / 14 5E / K40 / K40S / 40 Pro+ / K50 / K50 Pro / K60E / Poco F5 / X5 Pro / Mi 11ST / 13T Pro",
+      "compatibleModels": [
+        "Redmi Note 10",
+        "Redmi 10 Pro",
+        "Redmi 10 Pro Max",
+        "Redmi 11",
+        "Redmi 11 Pro",
+        "Redmi 11 Pro+",
+        "Redmi 11E Pro",
+        "Redmi Note 13",
+        "Redmi 13 Pro",
+        "Redmi Note 14",
+        "Redmi 14 5E",
+        "Redmi K40",
+        "Redmi K40S",
+        "Redmi 40 Pro+",
+        "Redmi K50",
+        "Redmi K50 Pro",
+        "Redmi K60E",
+        "POCO F5",
+        "POCO X5 Pro",
+        "POCO Mi 11ST",
+        "POCO 13T Pro"
+      ]
+    },
+    {
+      "id": "box-050",
+      "boxNumber": "BOX 050",
+      "displaySize": "6.6\"",
+      "title": "Samsung Galaxy A34 5G",
+      "rawText": "SAM A34 5G",
+      "compatibleModels": [
+        "Samsung Galaxy A34 5G"
+      ]
+    },
+    {
+      "id": "box-051",
+      "boxNumber": "BOX 051",
+      "displaySize": "6.6\"",
+      "title": "Samsung Galaxy A55",
+      "rawText": "SAM A55 / A35 / M35",
+      "compatibleModels": [
+        "Samsung Galaxy A55",
+        "Samsung Galaxy A35",
+        "Samsung Galaxy M35"
+      ]
+    },
+    {
+      "id": "box-052",
+      "boxNumber": "BOX 052",
+      "displaySize": "6.7\"",
+      "title": "Samsung Galaxy A14",
+      "rawText": "SAM A14 / M14 / F14 / A22 / F42 / A05S\nRealme: C53 / C51 / C51S / C61 / C61 India / C63 / C65S / N53 / N61 / N63 / Note 50 / Note 60 / Note 60X\nVivo: Y04 / Y29S / Y19E",
+      "compatibleModels": [
+        "Samsung Galaxy A14",
+        "Samsung Galaxy M14",
+        "Samsung Galaxy F14",
+        "Samsung Galaxy A22",
+        "Samsung Galaxy F42",
+        "Samsung Galaxy A05S",
+        "Realme C53",
+        "Realme C51",
+        "Realme C51S",
+        "Realme C61",
+        "Realme C61 India",
+        "Realme C63",
+        "Realme C65S",
+        "Realme N53",
+        "Realme N61",
+        "Realme N63",
+        "Realme Note 50",
+        "Realme Note 60",
+        "Realme Note 60X",
+        "Vivo Y04",
+        "Vivo Y29S",
+        "Vivo Y19E"
+      ]
+    },
+    {
+      "id": "box-053",
+      "boxNumber": "BOX 053",
+      "displaySize": "Mixed",
+      "title": "Redmi 10",
+      "rawText": "Redmi: 10 / 10 Prime / Note 10 / 10T / Note 11 / Note 11 SE / Poco M3 Pro\nRealme: 6 / 6S / 7 5G / 7 Asia / 7 Global / X7 Pro / Narzo 20 Pro / 30 / 30 Pro\nOPPO: A52 / A92 / Reno 2 / 2Z / 2F / K7X",
+      "compatibleModels": [
+        "Redmi 10",
+        "Redmi 10 Prime",
+        "Redmi Note 10",
+        "Redmi 10T",
+        "Redmi Note 11",
+        "Redmi Note 11 SE",
+        "POCO M3 Pro",
+        "Realme 6",
+        "Realme 6S",
+        "Realme 7 5G",
+        "Realme 7 Asia",
+        "Realme 7 Global",
+        "Realme X7 Pro",
+        "Realme Narzo 20 Pro",
+        "Realme 30",
+        "Realme 30 Pro",
+        "OPPO A52",
+        "OPPO A92",
+        "OPPO Reno 2",
+        "OPPO 2Z",
+        "OPPO 2F",
+        "OPPO K7X"
+      ]
+    },
+    {
+      "id": "box-054",
+      "boxNumber": "BOX 054",
+      "displaySize": "6.53\"",
+      "title": "Redmi 9",
+      "rawText": "Redmi 9 / 9A / 9C / 9i / 9 Prime / 10A 5G",
+      "compatibleModels": [
+        "Redmi 9",
+        "Redmi 9A",
+        "Redmi 9C",
+        "Redmi 9i",
+        "Redmi 9 Prime",
+        "Redmi 10A 5G"
+      ]
+    },
+    {
+      "id": "box-055",
+      "boxNumber": "BOX 055",
+      "displaySize": "Mixed",
+      "title": "Samsung Galaxy A15",
+      "rawText": "SAM A15 / A24 / A34 / A25 / M15 / M34 / F15 / F34",
+      "compatibleModels": [
+        "Samsung Galaxy A15",
+        "Samsung Galaxy A24",
+        "Samsung Galaxy A34",
+        "Samsung Galaxy A25",
+        "Samsung Galaxy M15",
+        "Samsung Galaxy M34",
+        "Samsung Galaxy F15",
+        "Samsung Galaxy F34"
+      ]
+    },
+    {
+      "id": "box-056",
+      "boxNumber": "BOX 056",
+      "displaySize": "6.3\"",
+      "title": "Redmi Note 7",
+      "rawText": "Redmi Note 7 / 7 Pro / 7S / Y3",
+      "compatibleModels": [
+        "Redmi Note 7",
+        "Redmi 7 Pro",
+        "Redmi 7S",
+        "Redmi Y3"
+      ]
+    },
+    {
+      "id": "box-057",
+      "boxNumber": "BOX 057",
+      "displaySize": "Mixed",
+      "title": "Samsung Galaxy A20S",
+      "rawText": "SAM A20S\nRedmi: 9 / 9A / 9C / 9i / 9 Prime / 10A\nTecno: POP 5 Lite / Pop 7 / 7 Pro / Spark 90 / Spark 90 2020 / Spark 90 2023 / Spark 6 GO / Spark 7 / Spark 8C / Spark 10 / Spark 10C\nHuawei: Nova Y61 / Enjoy 50Z / X5 / X5+ / X6 / X6A / X6B / X8 / X8A / Honor Play 6C / 20 / 30 / 40 / 70 Lite",
+      "compatibleModels": [
+        "Samsung Galaxy A20S",
+        "Redmi 9",
+        "Redmi 9A",
+        "Redmi 9C",
+        "Redmi 9i",
+        "Redmi 9 Prime",
+        "Redmi 10A",
+        "Tecno POP 5 Lite",
+        "Tecno Pop 7",
+        "Tecno 7 Pro",
+        "Tecno Spark 90",
+        "Tecno Spark 90 2020",
+        "Tecno Spark 90 2023",
+        "Tecno Spark 6 GO",
+        "Tecno Spark 7",
+        "Tecno Spark 8C",
+        "Tecno Spark 10",
+        "Tecno Spark 10C",
+        "Huawei Nova Y61",
+        "Huawei Enjoy 50Z",
+        "Huawei X5",
+        "Huawei X5+",
+        "Huawei X6",
+        "Huawei X6A",
+        "Huawei X6B",
+        "Huawei X8",
+        "Huawei X8A",
+        "Honor Play 6C",
+        "Honor 20",
+        "Honor 30",
+        "Honor 40",
+        "Honor 70 Lite"
+      ]
+    },
+    {
+      "id": "box-058",
+      "boxNumber": "BOX 058",
+      "displaySize": "6.5\"",
+      "title": "Samsung Galaxy A51",
+      "rawText": "SAM A51 / A53 / A52 / A52S / M31S / S20 FE 5G / S20 FE",
+      "compatibleModels": [
+        "Samsung Galaxy A51",
+        "Samsung Galaxy A53",
+        "Samsung Galaxy A52",
+        "Samsung Galaxy A52S",
+        "Samsung Galaxy M31S",
+        "Samsung Galaxy S20 FE 5G",
+        "Samsung Galaxy S20 FE"
+      ]
+    },
+    {
+      "id": "box-059",
+      "boxNumber": "BOX 059",
+      "displaySize": "6.43\"",
+      "title": "OPPO A93",
+      "rawText": "OPPO A93 / F17 Pro / Reno 4 / Reno 4 SE / Reno 4F / Reno 5 5G",
+      "compatibleModels": [
+        "OPPO A93",
+        "OPPO F17 Pro",
+        "OPPO Reno 4",
+        "OPPO Reno 4 SE",
+        "OPPO Reno 4F",
+        "OPPO Reno 5 5G"
+      ]
+    },
+    {
+      "id": "box-060",
+      "boxNumber": "BOX 060",
+      "displaySize": "Mixed",
+      "title": "Samsung Galaxy A80",
+      "rawText": "SAM A80 / A50 / A80S / A20 / A31 / A32 / A50S / M10S / M13 / M30 / M30S / M31 / M31 Prime / M21S / M21 / M32 / F22 / F41\nVivo: Y75 / S1 / S1 Pro / Z5 / V17 / Y93 / Y12 / Z1X / U3X / U10 / Y11 (2019) / Y9 / Y3 Standard / Y15 / Y17",
+      "compatibleModels": [
+        "Samsung Galaxy A80",
+        "Samsung Galaxy A50",
+        "Samsung Galaxy A80S",
+        "Samsung Galaxy A20",
+        "Samsung Galaxy A31",
+        "Samsung Galaxy A32",
+        "Samsung Galaxy A50S",
+        "Samsung Galaxy M10S",
+        "Samsung Galaxy M13",
+        "Samsung Galaxy M30",
+        "Samsung Galaxy M30S",
+        "Samsung Galaxy M31",
+        "Samsung Galaxy M31 Prime",
+        "Samsung Galaxy M21S",
+        "Samsung Galaxy M21",
+        "Samsung Galaxy M32",
+        "Samsung Galaxy F22",
+        "Samsung Galaxy F41",
+        "Vivo Y75",
+        "Vivo S1",
+        "Vivo S1 Pro",
+        "Vivo Z5",
+        "Vivo V17",
+        "Vivo Y93",
+        "Vivo Y12",
+        "Vivo Z1X",
+        "Vivo U3X",
+        "Vivo U10",
+        "Vivo Y11 (2019)",
+        "Vivo Y9",
+        "Vivo Y3 Standard",
+        "Vivo Y15",
+        "Vivo Y17"
+      ]
+    },
+    {
+      "id": "box-061",
+      "boxNumber": "BOX 061",
+      "displaySize": "6.4\"",
+      "title": "Samsung Galaxy A54",
+      "rawText": "SAM A54 / S23 FE",
+      "compatibleModels": [
+        "Samsung Galaxy A54",
+        "Samsung Galaxy S23 FE"
+      ]
+    },
+    {
+      "id": "box-062",
+      "boxNumber": "BOX 062",
+      "displaySize": "Mixed",
+      "title": "Samsung Galaxy A11",
+      "rawText": "SAM A11 / M11 / A80 / A90 / Redmi Note 9 / 9T / 10X / 8 Pro / Poco M3\nOPPO: F11 / A9 / Reno Ace / F11 Pro / K3 / A52 / Reno 10X / 1+ 7T\nHuawei: Y9S / Y9 / Y53 / Y19 / Y3 / Z5 / Y9 Prime / 9X / 9X Pro",
+      "compatibleModels": [
+        "Samsung Galaxy A11",
+        "Samsung Galaxy M11",
+        "Samsung Galaxy A80",
+        "Samsung Galaxy A90",
+        "Redmi Note 9",
+        "Redmi 9T",
+        "Redmi 10X",
+        "Redmi 8 Pro",
+        "POCO M3",
+        "OPPO F11",
+        "OPPO A9",
+        "OPPO Reno Ace",
+        "OPPO F11 Pro",
+        "OPPO K3",
+        "OPPO A52",
+        "OPPO Reno 10X",
+        "OnePlus 7T",
+        "Huawei Y9S",
+        "Huawei Y9",
+        "Huawei Y53",
+        "Huawei Y19",
+        "Huawei Y3",
+        "Huawei Z5",
+        "Huawei Y9 Prime",
+        "Huawei 9X",
+        "Huawei 9X Pro"
+      ]
+    },
+    {
+      "id": "box-063",
+      "boxNumber": "BOX 063",
+      "displaySize": "6.43\"",
+      "title": "Redmi Note 10",
+      "rawText": "Redmi Note 10 / Note 10S / Note 11 2022 / 11S 2022 / XM Poco M4 Pro 2022",
+      "compatibleModels": [
+        "Redmi Note 10",
+        "Redmi Note 10S",
+        "Redmi Note 11 2022",
+        "Redmi 11S 2022",
+        "Xiaomi Poco M4 Pro 2022"
+      ]
+    },
+    {
+      "id": "box-064",
+      "boxNumber": "BOX 064",
+      "displaySize": "6.22\"",
+      "title": "Redmi 8",
+      "rawText": "Redmi 8 / 8A / 8A Dual / 8A Pro / Note 8",
+      "compatibleModels": [
+        "Redmi 8",
+        "Redmi 8A",
+        "Redmi 8A Dual",
+        "Redmi 8A Pro",
+        "Redmi Note 8"
+      ]
+    },
+    {
+      "id": "box-065",
+      "boxNumber": "BOX 065",
+      "displaySize": "Mixed",
+      "title": "Samsung Galaxy A10",
+      "rawText": "SAM A10 / A10S / M10 / M01S / M20\nVivo: Y90 / Y91 / Y93 / Y95 / Y1S / Y11i / Y91i / Y91C\nOPPO: A7 / A7X / A5S / A12 / A11K / R17 / R17 Pro\nInfinix: S4 / X626",
+      "compatibleModels": [
+        "Samsung Galaxy A10",
+        "Samsung Galaxy A10S",
+        "Samsung Galaxy M10",
+        "Samsung Galaxy M01S",
+        "Samsung Galaxy M20",
+        "Vivo Y90",
+        "Vivo Y91",
+        "Vivo Y93",
+        "Vivo Y95",
+        "Vivo Y1S",
+        "Vivo Y11i",
+        "Vivo Y91i",
+        "Vivo Y91C",
+        "OPPO A7",
+        "OPPO A7X",
+        "OPPO A5S",
+        "OPPO A12",
+        "OPPO A11K",
+        "OPPO R17",
+        "OPPO R17 Pro",
+        "Infinix S4",
+        "Infinix X626"
+      ]
+    },
+    {
+      "id": "box-066",
+      "boxNumber": "BOX 066",
+      "displaySize": "5.5\"",
+      "title": "J7 2016",
+      "rawText": "J7 2016 / J7 / J4 / J7 Prime / Max",
+      "compatibleModels": [
+        "J7 2016",
+        "J7",
+        "J4",
+        "J7 Prime",
+        "Max"
+      ]
+    },
+    {
+      "id": "box-067",
+      "boxNumber": "BOX 067",
+      "displaySize": "5.5\"",
+      "title": "J7 Pro",
+      "rawText": "J7 Pro / J710",
+      "compatibleModels": [
+        "J7 Pro",
+        "J710"
+      ]
+    },
+    {
+      "id": "box-068",
+      "boxNumber": "BOX 068",
+      "displaySize": "5.0\"",
+      "title": "J5",
+      "rawText": "J5 / J6 / J6+",
+      "compatibleModels": [
+        "J5",
+        "J6",
+        "J6+"
+      ]
+    },
+    {
+      "id": "box-069",
+      "boxNumber": "BOX 069",
+      "displaySize": "5.6\"",
+      "title": "A8 2018",
+      "rawText": "A8 2018 / A9 / J5 Prime",
+      "compatibleModels": [
+        "A8 2018",
+        "A9",
+        "J5 Prime"
+      ]
+    },
+    {
+      "id": "box-070",
+      "boxNumber": "BOX 070",
+      "displaySize": "5.0\"",
+      "title": "A2 Core",
+      "rawText": "A2 Core / M01 / 7C / Y7 Prime",
+      "compatibleModels": [
+        "A2 Core",
+        "M01",
+        "7C",
+        "Y7 Prime"
+      ]
+    },
+    {
+      "id": "box-071",
+      "boxNumber": "BOX 071",
+      "displaySize": "Mixed",
+      "title": "S1 Pro",
+      "rawText": "S1 Pro / OP F5 / A60 / Vivo Y65",
+      "compatibleModels": [
+        "S1 Pro",
+        "OPPO F5",
+        "OPPO A60",
+        "Vivo Y65"
+      ]
+    },
+    {
+      "id": "box-072",
+      "boxNumber": "BOX 072",
+      "displaySize": "5.7\"",
+      "title": "OPPO A83",
+      "rawText": "OP A83",
+      "compatibleModels": [
+        "OPPO A83"
+      ]
+    },
+    {
+      "id": "box-073",
+      "boxNumber": "BOX 073",
+      "displaySize": "5.2\"",
+      "title": "OPPO A57",
+      "rawText": "OP A57",
+      "compatibleModels": [
+        "OPPO A57"
+      ]
+    },
+    {
+      "id": "box-074",
+      "boxNumber": "BOX 074",
+      "displaySize": "6.4\"",
+      "title": "OPPO A91",
+      "rawText": "OP A91 / Reno 3 / F15 / F17",
       "compatibleModels": [
         "OPPO A91",
-        "OPPO A73 4G",
+        "OPPO Reno 3",
         "OPPO F15",
-        "OPPO F17",
-        "OPPO RENO 3 4G"
-      ],
-      "rawText": "OPPO A91/OP A73 4G/OP F15/OP F17/OP RENO 3 4G"
+        "OPPO F17"
+      ]
     },
     {
-      "id": "box-84",
-      "boxNumber": "BOX 84",
-      "displaySize": "6.67\"",
-      "title": "REDMI NOTE 12 4G/NOTE 12 5G/NOTE 12R PRO",
+      "id": "box-075",
+      "boxNumber": "BOX 075",
+      "displaySize": "6.43\"",
+      "title": "OPPO A93",
+      "rawText": "OP A93 / Realme 8 / Huawei Y8P",
       "compatibleModels": [
-        "REDMI NOTE 12 4G",
-        "REDMI NOTE 12 5G",
-        "REDMI NOTE 12R PRO"
-      ],
-      "rawText": "REDMI NOTE 12 4G/RM NOTE 12 5G/RM NOTE 12R PRO"
+        "OPPO A93",
+        "Realme 8",
+        "Huawei Y8P"
+      ]
     },
     {
-      "id": "box-85",
-      "boxNumber": "BOX 85",
-      "displaySize": "6.53\"",
-      "title": "OPPO F11 PRO/K3/REALME X",
+      "id": "box-076",
+      "boxNumber": "BOX 076",
+      "displaySize": "5.45\"",
+      "title": "Y5 2018",
+      "rawText": "Y5 2018 / Y83 / Y81 / Y89",
       "compatibleModels": [
-        "OPPO F11 PRO",
-        "OPPO K3",
-        "REALME X"
-      ],
-      "rawText": "OPPO F11 PRO/OP K3/OP REAL X"
+        "Y5 2018",
+        "Y83",
+        "Y81",
+        "Y89"
+      ]
     },
     {
-      "id": "box-86",
-      "boxNumber": "BOX 86",
-      "displaySize": "6.67\"",
-      "title": "REDMI NOTE 13 PRO 5G/TURBO 3/TURBO 4",
+      "id": "box-077",
+      "boxNumber": "BOX 077",
+      "displaySize": "6.59\"",
+      "title": "Y9 Prime",
+      "rawText": "Y9 Prime / 5T / Honor 20 / Enjoy 8E",
       "compatibleModels": [
-        "REDMI NOTE 13 PRO 5G",
-        "REDMI TURBO 3",
-        "REDMI TURBO 4"
-      ],
-      "rawText": "REDMI NOTE 13 PRO 5G/RM TURBO 3/RM TURBO 4"
+        "Y9 Prime",
+        "5T",
+        "Honor 20",
+        "Honor Enjoy 8E"
+      ]
     },
     {
-      "id": "box-87",
-      "boxNumber": "BOX 87",
-      "displaySize": "6.7\"",
-      "title": "OPPO F29 5G",
+      "id": "box-078",
+      "boxNumber": "BOX 078",
+      "displaySize": "5.7\"",
+      "title": "Y6 2018",
+      "rawText": "Y6 2018 / Y6P / Play 10",
       "compatibleModels": [
-        "OPPO F29 5G"
-      ],
-      "rawText": "OPPO F29 5G"
+        "Y6 2018",
+        "Y6P",
+        "Play 10"
+      ]
     },
     {
-      "id": "box-88",
-      "boxNumber": "BOX 88",
+      "id": "box-079",
+      "boxNumber": "BOX 079",
+      "displaySize": "6.5\"",
+      "title": "Y9 2019",
+      "rawText": "Y9 2019 / Y9 2018",
+      "compatibleModels": [
+        "Y9 2019",
+        "Y9 2018"
+      ]
+    },
+    {
+      "id": "box-080",
+      "boxNumber": "BOX 080",
       "displaySize": "6.26\"",
-      "title": "REDMI NOTE 6 PRO",
+      "title": "Y7 2019",
+      "rawText": "Y7 2019 / Y7 2018",
       "compatibleModels": [
-        "REDMI NOTE 6 PRO"
-      ],
-      "rawText": "REDMI NOTE 6 PRO"
+        "Y7 2019",
+        "Y7 2018"
+      ]
     },
     {
-      "id": "box-89",
-      "boxNumber": "BOX 89",
-      "displaySize": "6.78\"",
-      "title": "OPPO F31 PRO+ 5G/A6 MAX/A6 GT/K13 TURBO/K13 TURBO PRO/FIND X9 ULTRA 5G",
+      "id": "box-081",
+      "boxNumber": "BOX 081",
+      "displaySize": "5.84\"",
+      "title": "P20 Lite",
+      "rawText": "P20 Lite / P40 Lite / Nova 5i",
       "compatibleModels": [
-        "OPPO F31 PRO+ 5G",
-        "OPPO A6 MAX",
-        "OPPO A6 GT",
-        "OPPO K13 TURBO",
-        "OPPO K13 TURBO PRO",
-        "OPPO FIND X9 ULTRA 5G"
-      ],
-      "rawText": "OP F31 PRO+5G/OP A6 MAX/OP A6 GT/OP K13 TURBO/OP K13 TURBO PRO/FIND X9 ULTRA 5G"
+        "P20 Lite",
+        "P40 Lite",
+        "Nova 5i"
+      ]
     },
     {
-      "id": "box-90",
-      "boxNumber": "BOX 90",
-      "displaySize": "6.3\"",
-      "title": "REDMI NOTE 8",
+      "id": "box-082",
+      "boxNumber": "BOX 082",
+      "displaySize": "5.9\"",
+      "title": "Nova 2i",
+      "rawText": "Nova 2i / Nova 3i",
       "compatibleModels": [
-        "REDMI NOTE 8"
-      ],
-      "rawText": "REDMI NOTE 8"
+        "Nova 2i",
+        "Nova 3i"
+      ]
     },
     {
-      "id": "box-91",
-      "boxNumber": "BOX 91",
-      "displaySize": "6.59\"",
-      "title": "OPPO FIND X8/FIND X8S+",
+      "id": "box-083",
+      "boxNumber": "BOX 083",
+      "displaySize": "5.45\"",
+      "title": "Y5P",
+      "rawText": "Y5P",
       "compatibleModels": [
-        "OPPO FIND X8",
-        "OPPO FIND X8S+"
-      ],
-      "rawText": "OPPO FIND X8/X8S+"
+        "Y5P"
+      ]
     },
     {
-      "id": "box-92",
-      "boxNumber": "BOX 92",
+      "id": "box-084",
+      "boxNumber": "BOX 084",
+      "displaySize": "6.5\"",
+      "title": "Realme 5",
+      "rawText": "Realme 5 / C15 / 10A / C20 / C25",
+      "compatibleModels": [
+        "Realme 5",
+        "Realme C15",
+        "Realme 10A",
+        "Realme C20",
+        "Realme C25"
+      ]
+    },
+    {
+      "id": "box-085",
+      "boxNumber": "BOX 085",
+      "displaySize": "Mixed",
+      "title": "A51",
+      "rawText": "A51 / 1+ Nord / 14 Civi Pro / Pixel 6",
+      "compatibleModels": [
+        "A51",
+        "OnePlus Nord",
+        "OnePlus 14 Civi Pro",
+        "Google Pixel 6"
+      ]
+    },
+    {
+      "id": "box-086",
+      "boxNumber": "BOX 086",
+      "displaySize": "6.39\"",
+      "title": "V15 Pro",
+      "rawText": "V15 Pro / K20 / K20 Pro / F2 / F2 Pro",
+      "compatibleModels": [
+        "V15 Pro",
+        "K20",
+        "K20 Pro",
+        "F2",
+        "F2 Pro"
+      ]
+    },
+    {
+      "id": "box-087",
+      "boxNumber": "BOX 087",
+      "displaySize": "6.7\"",
+      "title": "A06",
+      "rawText": "A06 / M06 / F06 / A07 / Y04",
+      "compatibleModels": [
+        "A06",
+        "M06",
+        "F06",
+        "A07",
+        "Y04"
+      ]
+    },
+    {
+      "id": "box-088",
+      "boxNumber": "BOX 088",
+      "displaySize": "Mixed",
+      "title": "Redmi Note 12",
+      "rawText": "Redmi Note 12 / Poco F5 / X9 / Hot 50 / 50i",
+      "compatibleModels": [
+        "Redmi Note 12",
+        "POCO F5",
+        "POCO X9",
+        "POCO Hot 50",
+        "POCO 50i"
+      ]
+    },
+    {
+      "id": "box-089",
+      "boxNumber": "BOX 089",
+      "displaySize": "6.7\"",
+      "title": "S24 FE",
+      "rawText": "S24 FE / 25 FE / A36 / A56 / A35",
+      "compatibleModels": [
+        "S24 FE",
+        "25 FE",
+        "A36",
+        "A56",
+        "A35"
+      ]
+    },
+    {
+      "id": "box-090",
+      "boxNumber": "BOX 090",
+      "displaySize": "Mixed",
+      "title": "X5B",
+      "rawText": "X5B / X6 / X6A / X6B / A1 / A2 / A2 PWS",
+      "compatibleModels": [
+        "X5B",
+        "X6",
+        "X6A",
+        "X6B",
+        "A1",
+        "A2",
+        "A2 PWS"
+      ]
+    },
+    {
+      "id": "box-091",
+      "boxNumber": "BOX 091",
+      "displaySize": "Mixed",
+      "title": "X7B",
+      "rawText": "X7B / X7C / Moto G75 / Honor 90 / P81",
+      "compatibleModels": [
+        "X7B",
+        "X7C",
+        "Motorola G75",
+        "Honor 90",
+        "Honor P81"
+      ]
+    },
+    {
+      "id": "box-092",
+      "boxNumber": "BOX 092",
       "displaySize": "6.53\"",
-      "title": "REDMI NOTE 8 PRO/NOTE 9 4G/9 POWER/9T",
+      "title": "Huawei Nova 7",
+      "rawText": "Huawei Nova 7",
       "compatibleModels": [
-        "REDMI NOTE 8 PRO",
-        "REDMI NOTE 9 4G",
-        "REDMI 9 POWER",
-        "REDMI 9T"
-      ],
-      "rawText": "REDMI NOTE 8 PRO/RM NOTE 9 4G/RM 9 POWER/RM 9T"
+        "Huawei Nova 7"
+      ]
     },
     {
-      "id": "box-93",
-      "boxNumber": "BOX 93",
-      "displaySize": "6.59\"",
-      "title": "OPPO FIND X8S",
+      "id": "box-093",
+      "boxNumber": "BOX 093",
+      "displaySize": "6.43\"",
+      "title": "F17 Pro",
+      "rawText": "F17 Pro",
       "compatibleModels": [
-        "OPPO FIND X8S"
-      ],
-      "rawText": "OPPO FIND X85"
+        "F17 Pro"
+      ]
     },
     {
-      "id": "box-94",
-      "boxNumber": "BOX 94",
-      "displaySize": "6.67\"",
-      "title": "REDMI TURBO 4 PRO 5G/K80 ULTRA/NOTE 15 PRO/NOTE 15 PRO 5G/TURBO 5 MAX/K90 MAX 5G/POCO F7 5G",
+      "id": "box-094",
+      "boxNumber": "BOX 094",
+      "displaySize": "6.62\"",
+      "title": "OnePlus 9 RT",
+      "rawText": "1+ 9 RT",
       "compatibleModels": [
-        "REDMI TURBO 4 PRO 5G",
-        "REDMI K80 ULTRA",
-        "REDMI NOTE 15 PRO",
-        "REDMI NOTE 15 PRO 5G",
-        "REDMI TURBO 5 MAX",
-        "REDMI K90 MAX 5G",
-        "POCO F7 5G"
-      ],
-      "rawText": "REDMI TURBO 4 PRO 5G/RM K80 ULTRA/NOTE 15 PRO(CHINA)/NOTE 15 PRO 5G(Global)/RM TURBO 5 MAX/RM K90 MAX 5G (XIAOMI POC F7 5G)"
+        "OnePlus 9 RT"
+      ]
     },
     {
-      "id": "box-95",
-      "boxNumber": "BOX 95",
-      "displaySize": "6.7\"",
-      "title": "OPPO RENO 13 5G/RENO 14 5G/RENO 14F 5G/RENO 15/RENO 15C/RENO 15FS/RENO 15F/RENO 16 F/RENO 16 FS/F31 5G/F31 PRO 5G/A6/A6 PRO/A6S PRO/F33 5G/F33 PRO 5G",
+      "id": "box-095",
+      "boxNumber": "BOX 095",
+      "displaySize": "6.88\"",
+      "title": "Redmi 14C",
+      "rawText": "Redmi 14C",
       "compatibleModels": [
-        "OPPO RENO 13 5G",
-        "OPPO RENO 14 5G",
-        "OPPO RENO 14F 5G",
-        "OPPO RENO 15",
-        "OPPO RENO 15C",
-        "OPPO RENO 15FS",
-        "OPPO RENO 15F",
-        "OPPO RENO 16 F",
-        "OPPO RENO 16 FS",
-        "OPPO F31 5G",
-        "OPPO F31 PRO 5G",
-        "OPPO A6",
-        "OPPO A6 PRO",
-        "OPPO A6S PRO",
-        "OPPO F33 5G",
-        "OPPO F33 PRO 5G"
-      ],
-      "rawText": "OPPO RENO 135G国际版/OP RENO 13 CHINA /RENO 14 5G/RENO 14F 5G/RENO 15 国外版/RENO 15 5G(INDIA)/RENO 15C/RENO 15FS/RENO 15F/OP RENO 150 INDIA/RENO16 F/RENO16 FS/OP F31 5G/F31 PRO 5G/OPPO A6 (CHINA)/A6 PRO CHINA/A6 PRO 4G/A6 PRO 5G/OP A6 PRO/OP A6S PRO/OP F33 5G/F33 PRO 5G国际版"
+        "Redmi 14C"
+      ]
     },
     {
-      "id": "box-96",
-      "boxNumber": "BOX 96",
-      "displaySize": "6.58\"",
-      "title": "REDMI 11 PRIME 4G/11 PRIME 5G/A1/A1+/A2/A2+/10 5G/10X 5G/10X PRO 5G/10 PRIME+ 5G/NOTE 11E/NOTE 11R 5G/REALME 5",
-      "compatibleModels": [
-        "REDMI 11 PRIME 4G",
-        "REDMI 11 PRIME 5G",
-        "REDMI A1",
-        "REDMI A1+",
-        "REDMI A2",
-        "REDMI A2+",
-        "REDMI 10 5G",
-        "REDMI 10X 5G",
-        "REDMI 10X PRO 5G",
-        "REDMI 10 PRIME+ 5G",
-        "REDMI NOTE 11E",
-        "REDMI NOTE 11R 5G",
-        "REALME 5"
-      ],
-      "rawText": "REDMI 11 PRIME 4G/RM 11 PRIME 5G/RM A1/RM A1+/RM A2/RM A2+/RM 10 5G/RM 10X 5G/RM 10X PRO SG/RM 10 PRIME+5G/RM NOTE 11E/RM NOTE 11R 5G (REAL 5)"
+      "id": "box-096",
+      "boxNumber": "BOX 096",
+      "displaySize": "Unknown",
+      "title": "Box 096",
+      "rawText": "",
+      "compatibleModels": []
     },
     {
-      "id": "box-97",
-      "boxNumber": "BOX 97",
-      "displaySize": "6.7\"",
-      "title": "OPPO RENO 14 PRO 5G",
+      "id": "box-097",
+      "boxNumber": "BOX 097",
+      "displaySize": "6.75\"",
+      "title": "ZTE A35",
+      "rawText": "ZTE A35",
       "compatibleModels": [
-        "OPPO RENO 14 PRO 5G"
-      ],
-      "rawText": "OPPO RENO 14 PRO 5G"
+        "ZTE A35"
+      ]
     },
     {
-      "id": "box-98",
-      "boxNumber": "BOX 98",
-      "displaySize": "6.7\"",
-      "title": "OPPO RENO 15 5G/RENO 15 PRO MINI/RENO 15 PRO/RENO 16/RENO 16 PRO",
+      "id": "box-098",
+      "boxNumber": "BOX 098",
+      "displaySize": "6.44\"",
+      "title": "OPPO F17",
+      "rawText": "OPPO F17",
       "compatibleModels": [
-        "OPPO RENO 15 5G",
-        "OPPO RENO 15 PRO MINI",
-        "OPPO RENO 15 PRO",
-        "OPPO RENO 16",
-        "OPPO RENO 16 PRO"
-      ],
-      "rawText": "OPPO RENO 15 5G(CHINA)/OP RENO 15 PRO MINI/OP RENO 15 PRO国外版/RENO 16/RENO 16 PRO"
+        "OPPO F17"
+      ]
     },
     {
-      "id": "box-99",
-      "boxNumber": "BOX 99",
-      "displaySize": "6.73\"",
-      "title": "REDMI K90 PRO MAX/XIAOMI 17 PRO MAX",
+      "id": "box-099",
+      "boxNumber": "BOX 099",
+      "displaySize": "6.5\"",
+      "title": "Nokia C3",
+      "rawText": "Nokia C3",
       "compatibleModels": [
-        "REDMI K90 PRO MAX",
-        "XIAOMI 17 PRO MAX"
-      ],
-      "rawText": "RM K90 PRO MAX(XM 17 PRO MAX)"
+        "Nokia C3"
+      ]
     },
     {
       "id": "box-100",
       "boxNumber": "BOX 100",
-      "displaySize": "6.78\"",
-      "title": "OPPO FIND X9/FIND X9S/HONOR MAGIC 8",
+      "displaySize": "6.6\"",
+      "title": "Samsung Galaxy A14",
+      "rawText": "SAM A14",
       "compatibleModels": [
-        "OPPO FIND X9",
-        "OPPO FIND X9S",
-        "HONOR MAGIC 8"
-      ],
-      "rawText": "OPPO FIND X9/FIND X9S/HONOR MAGIC 8"
+        "Samsung Galaxy A14"
+      ]
     },
     {
       "id": "box-101",
       "boxNumber": "BOX 101",
       "displaySize": "6.5\"",
-      "title": "REDMI NOTE 10 5G/REALME 6",
+      "title": "Honor X6",
+      "rawText": "Honor X6",
       "compatibleModels": [
-        "REDMI NOTE 10 5G",
-        "REALME 6"
-      ],
-      "rawText": "REDMI NOTE 105G (REAL 6)"
+        "Honor X6"
+      ]
     },
     {
       "id": "box-102",
       "boxNumber": "BOX 102",
-      "displaySize": "6.7\"",
-      "title": "OPPO A6C 4G/REALME C83 5G",
+      "displaySize": "6.6\"",
+      "title": "A34 5G",
+      "rawText": "A34 5G",
       "compatibleModels": [
-        "OPPO A6C 4G",
-        "REALME C83 5G"
-      ],
-      "rawText": "OP A6C 4G(GLOBAL) (REALME C83 5G)"
+        "A34 5G"
+      ]
     },
     {
       "id": "box-103",
       "boxNumber": "BOX 103",
-      "displaySize": "6.67\"",
-      "title": "REDMI K60/K60 PRO/REALME GT2 PRO",
+      "displaySize": "6.6\"",
+      "title": "A14",
+      "rawText": "A14",
       "compatibleModels": [
-        "REDMI K60",
-        "REDMI K60 PRO",
-        "REALME GT2 PRO"
-      ],
-      "rawText": "REDMI K60/RM K60 PRO (REAL GT2 PRO)"
+        "A14"
+      ]
     },
     {
       "id": "box-104",
       "boxNumber": "BOX 104",
-      "displaySize": "6.82\"",
-      "title": "OPPO FIND X9S PRO 5G/ONEPLUS 15T",
+      "displaySize": "6.0\"",
+      "title": "OPPO F5",
+      "rawText": "OPPO F5",
       "compatibleModels": [
-        "OPPO FIND X9S PRO 5G",
-        "ONEPLUS 15T"
-      ],
-      "rawText": "OP FIND X9S PRO SG(1+15T)"
+        "OPPO F5"
+      ]
     },
     {
       "id": "box-105",
       "boxNumber": "BOX 105",
-      "displaySize": "6.67\"",
-      "title": "REDMI K90/TURBO 5/POCO F8 PRO",
+      "displaySize": "6.7\"",
+      "title": "Honor X8",
+      "rawText": "Honor X8",
       "compatibleModels": [
-        "REDMI K90",
-        "REDMI TURBO 5",
-        "POCO F8 PRO"
-      ],
-      "rawText": "REDMI K90/RM TURBO 5/(XM POC F8 PRO)"
+        "Honor X8"
+      ]
     },
     {
       "id": "box-106",
       "boxNumber": "BOX 106",
-      "displaySize": "6.67\"",
-      "title": "OPPO A6 4G/A6 5G/A6X 4G/A6X 5G/C85 4G/A6S 4G/A6S 5G/A6T 4G/A6T 5G/A6T PRO 4G/A6C/A6 PRO/K14X 5G/VIVO T5X 5G/REALME 15X/REALME C85",
+      "displaySize": "6.7\"",
+      "title": "Honor 400",
+      "rawText": "Honor 400",
       "compatibleModels": [
-        "OPPO A6 4G",
-        "OPPO A6 5G",
-        "OPPO A6X 4G",
-        "OPPO A6X 5G",
-        "OPPO C85 4G",
-        "OPPO A6S 4G",
-        "OPPO A6S 5G",
-        "OPPO A6T 4G",
-        "OPPO A6T 5G",
-        "OPPO A6T PRO 4G",
-        "OPPO A6C",
-        "OPPO A6 PRO",
-        "OPPO K14X 5G",
-        "VIVO T5X 5G",
-        "REALME 15X",
-        "REALME C85"
-      ],
-      "rawText": "OPPO A6 4G/A6 5G/A6X 4G/A6X 5G/C85 4G/OP A6S 4G/A6S 5G/OP A6T 4G/OP АБТ 5G/OP A6T PRO 4G/OP A6C/A6 PRO INDIA/OP K14X 5G/VO T5X 5G (REALME 15X (INDIA)/REALME C85)"
+        "Honor 400"
+      ]
+    },
+    {
+      "id": "box-107",
+      "boxNumber": "BOX 107",
+      "displaySize": "6.59\"",
+      "title": "Honor 9X",
+      "rawText": "Honor 9X",
+      "compatibleModels": [
+        "Honor 9X"
+      ]
+    },
+    {
+      "id": "box-108",
+      "boxNumber": "BOX 108",
+      "displaySize": "6.7\"",
+      "title": "Samsung Galaxy A06",
+      "rawText": "SAM A06",
+      "compatibleModels": [
+        "Samsung Galaxy A06"
+      ]
+    },
+    {
+      "id": "box-109",
+      "boxNumber": "BOX 109",
+      "displaySize": "5.2\"",
+      "title": "OPPO A57",
+      "rawText": "OPPO A57",
+      "compatibleModels": [
+        "OPPO A57"
+      ]
+    },
+    {
+      "id": "box-110",
+      "boxNumber": "BOX 110",
+      "displaySize": "6.78\"",
+      "title": "Tecno Pova 5 Pro",
+      "rawText": "Tecno Pova 5 Pro",
+      "compatibleModels": [
+        "Tecno Pova 5 Pro"
+      ]
+    },
+    {
+      "id": "box-111",
+      "boxNumber": "BOX 111",
+      "displaySize": "6.43\"",
+      "title": "F19 Pro",
+      "rawText": "F19 Pro",
+      "compatibleModels": [
+        "F19 Pro"
+      ]
+    },
+    {
+      "id": "box-112",
+      "boxNumber": "BOX 112",
+      "displaySize": "Mixed",
+      "title": "M53",
+      "rawText": "M53 / OP A54",
+      "compatibleModels": [
+        "M53",
+        "OPPO A54"
+      ]
+    },
+    {
+      "id": "box-113",
+      "boxNumber": "BOX 113",
+      "displaySize": "6.55\"",
+      "title": "OnePlus 9T",
+      "rawText": "OnePlus 9T",
+      "compatibleModels": [
+        "OnePlus 9T"
+      ]
+    },
+    {
+      "id": "box-114",
+      "boxNumber": "BOX 114",
+      "displaySize": "6.82\"",
+      "title": "Hot 12 Play",
+      "rawText": "Hot 12 Play",
+      "compatibleModels": [
+        "Hot 12 Play"
+      ]
+    },
+    {
+      "id": "box-115",
+      "boxNumber": "BOX 115",
+      "displaySize": "6.9\"",
+      "title": "Tecno Pova 2",
+      "rawText": "Tecno Pova 2",
+      "compatibleModels": [
+        "Tecno Pova 2"
+      ]
+    },
+    {
+      "id": "box-116",
+      "boxNumber": "BOX 116",
+      "displaySize": "6.8\"",
+      "title": "Camon 17F",
+      "rawText": "Camon 17F",
+      "compatibleModels": [
+        "Camon 17F"
+      ]
+    },
+    {
+      "id": "box-117",
+      "boxNumber": "BOX 117",
+      "displaySize": "Unknown",
+      "title": "ZTE 154",
+      "rawText": "ZTE 154",
+      "compatibleModels": [
+        "ZTE 154"
+      ]
+    },
+    {
+      "id": "box-118",
+      "boxNumber": "BOX 118",
+      "displaySize": "Mixed",
+      "title": "Motorola G31",
+      "rawText": "Moto G31 / G41 / G51 / G71",
+      "compatibleModels": [
+        "Motorola G31",
+        "Motorola G41",
+        "Motorola G51",
+        "Motorola G71"
+      ]
+    },
+    {
+      "id": "box-119",
+      "boxNumber": "BOX 119",
+      "displaySize": "6.7\"",
+      "title": "Honor X8",
+      "rawText": "Honor X8",
+      "compatibleModels": [
+        "Honor X8"
+      ]
+    },
+    {
+      "id": "box-120",
+      "boxNumber": "BOX 120",
+      "displaySize": "6.95\"",
+      "title": "Infinix Note 11i",
+      "rawText": "Infinix Note 11i",
+      "compatibleModels": [
+        "Infinix Note 11i"
+      ]
+    },
+    {
+      "id": "box-121",
+      "boxNumber": "BOX 121",
+      "displaySize": "6.78\"",
+      "title": "Infinix Hot 30",
+      "rawText": "Infinix Hot 30",
+      "compatibleModels": [
+        "Infinix Hot 30"
+      ]
+    },
+    {
+      "id": "box-122",
+      "boxNumber": "BOX 122",
+      "displaySize": "Unknown",
+      "title": "Box 122",
+      "rawText": "",
+      "compatibleModels": []
+    },
+    {
+      "id": "box-123",
+      "boxNumber": "BOX 123",
+      "displaySize": "6.67\"",
+      "title": "Redmi Note 9",
+      "rawText": "Redmi Note 9 / Note 13",
+      "compatibleModels": [
+        "Redmi Note 9",
+        "Redmi Note 13"
+      ]
+    },
+    {
+      "id": "box-124",
+      "boxNumber": "BOX 124",
+      "displaySize": "6.5\"",
+      "title": "SA54",
+      "rawText": "SA54",
+      "compatibleModels": [
+        "SA54"
+      ]
+    },
+    {
+      "id": "box-125",
+      "boxNumber": "BOX 125",
+      "displaySize": "6.88\"",
+      "title": "Redmi 15",
+      "rawText": "Redmi 15",
+      "compatibleModels": [
+        "Redmi 15"
+      ]
+    },
+    {
+      "id": "box-126",
+      "boxNumber": "BOX 126",
+      "displaySize": "6.72\"",
+      "title": "OnePlus Nord CE 3 Lite",
+      "rawText": "OnePlus Nord CE 3 Lite",
+      "compatibleModels": [
+        "OnePlus Nord CE 3 Lite"
+      ]
+    },
+    {
+      "id": "box-127",
+      "boxNumber": "BOX 127",
+      "displaySize": "6.88\"",
+      "title": "Redmi 15C",
+      "rawText": "Redmi 15C",
+      "compatibleModels": [
+        "Redmi 15C"
+      ]
+    },
+    {
+      "id": "box-128",
+      "boxNumber": "BOX 128",
+      "displaySize": "6.78\"",
+      "title": "Infinix Hot 40 Pro",
+      "rawText": "Infinix Hot 40 Pro",
+      "compatibleModels": [
+        "Infinix Hot 40 Pro"
+      ]
+    },
+    {
+      "id": "box-129",
+      "boxNumber": "BOX 129",
+      "displaySize": "Unknown",
+      "title": "Box 129",
+      "rawText": "",
+      "compatibleModels": []
+    },
+    {
+      "id": "box-130",
+      "boxNumber": "BOX 130",
+      "displaySize": "6.55\"",
+      "title": "OnePlus 8T",
+      "rawText": "OnePlus 8T",
+      "compatibleModels": [
+        "OnePlus 8T"
+      ]
     }
   ]
 }

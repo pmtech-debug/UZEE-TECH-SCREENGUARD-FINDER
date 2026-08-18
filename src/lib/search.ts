@@ -22,41 +22,9 @@ const BRAND_ALIASES: Record<string, string[]> = {
   xm: ["xiaomi", "redmi"],
   poc: ["poco"],
   poco: ["poc"],
+  moto: ["motorola"],
+  motorola: ["moto"],
 };
-
-/**
- * Generates search query variations by replacing brand tokens with their aliases.
- * e.g., "Samsung A06" -> ["Samsung A06", "SAM A06", "Galaxy A06"]
- */
-function expandQueryWithAliases(query: string): string[] {
-  const trimmed = query.trim();
-  if (!trimmed) return [];
-
-  const tokens = trimmed.split(/\s+/);
-  const variations: string[][] = [[]];
-
-  for (const token of tokens) {
-    const tokenLower = token.toLowerCase();
-    const aliases = BRAND_ALIASES[tokenLower];
-
-    const nextVariations: string[][] = [];
-    const options = aliases ? [token, ...aliases] : [token];
-
-    for (const prefix of variations) {
-      for (const opt of options) {
-        nextVariations.push([...prefix, opt]);
-      }
-    }
-    variations.length = 0;
-    variations.push(...nextVariations);
-  }
-
-  const queries = Array.from(
-    new Set(variations.map((v) => v.join(" ")))
-  ).slice(0, 8);
-
-  return queries;
-}
 
 export function createSearchEngine(boxes: Box[]) {
   const fuseOptions = {
@@ -76,6 +44,97 @@ export function createSearchEngine(boxes: Box[]) {
   return new Fuse(boxes, fuseOptions);
 }
 
+/**
+ * Normalizes text for model token comparisons.
+ * Standardizes common model variations e.g. "S24 FE" <-> "S24FE"
+ */
+function normalizeText(text: string): string {
+  let t = text.toLowerCase().trim();
+  t = t.replace(
+    /\b(s|a|m|n|x|z|g|y|t|c|v|f|p|r|e|k|i|q|b)(\d+)\s*(fe|pro|plus|max|lite|ultra|gt|se|neo|5g|4g|i|s|g|t|c)\b/gi,
+    "$1$2 $3"
+  );
+  return t;
+}
+
+/**
+ * Tests if a compatible model string genuinely matches the search query.
+ */
+function matchModelString(
+  query: string,
+  model: string
+): { isMatch: boolean; score: number } {
+  const qNorm = normalizeText(query);
+  const mNorm = normalizeText(model);
+
+  const qTokens = qNorm.split(/\s+/).filter(Boolean);
+  if (qTokens.length === 0) return { isMatch: false, score: 1 };
+
+  // Identify brand tokens in query
+  const qBrands = new Set<string>();
+  const qModelTokens: string[] = [];
+
+  for (const token of qTokens) {
+    if (BRAND_ALIASES[token]) {
+      qBrands.add(token);
+      for (const alias of BRAND_ALIASES[token]) {
+        qBrands.add(alias);
+      }
+    } else {
+      qModelTokens.push(token);
+    }
+  }
+
+  // If query contains brand token(s), model MUST match at least one brand alias
+  if (qBrands.size > 0) {
+    const hasBrand = Array.from(qBrands).some((b) => mNorm.includes(b));
+    if (!hasBrand) return { isMatch: false, score: 1 };
+  }
+
+  // If query contains only brand (e.g. "Samsung"), match all models of that brand
+  if (qModelTokens.length === 0) {
+    return { isMatch: true, score: 0.1 };
+  }
+
+  // Check each non-brand model token against model string with strict digit boundaries
+  for (const qt of qModelTokens) {
+    const qtUnspaced = qt.replace(/\s+/g, "");
+
+    // Regex pattern: word boundary before, and no trailing digit if qt ends in digit
+    const endsWithDigit = /\d$/.test(qt);
+    const patternStr =
+      "\\b" +
+      qt.replace(/[.*+?^${}()|[\]\\]/g, "\\$&") +
+      (endsWithDigit ? "(?!\\d)" : "\\b");
+    const pattern = new RegExp(patternStr, "i");
+
+    const mUnspaced = mNorm.replace(/\s+/g, "");
+    const patternUnspacedStr =
+      "\\b" +
+      qtUnspaced.replace(/[.*+?^${}()|[\]\\]/g, "\\$&") +
+      (endsWithDigit ? "(?!\\d)" : "\\b");
+    const patternUnspaced = new RegExp(patternUnspacedStr, "i");
+
+    const isTokenMatch = pattern.test(mNorm) || patternUnspaced.test(mUnspaced);
+
+    if (!isTokenMatch) {
+      return { isMatch: false, score: 1 };
+    }
+  }
+
+  // Calculate score for ranking (lower is better)
+  if (qNorm === mNorm) {
+    return { isMatch: true, score: 0.0 }; // Exact match
+  }
+
+  // Base model match (e.g. "iPhone 16 6.1" for query "iPhone 16")
+  if (mNorm.startsWith(qNorm + " ")) {
+    return { isMatch: true, score: 0.01 };
+  }
+
+  return { isMatch: true, score: 0.05 };
+}
+
 export function searchBoxes(
   fuse: Fuse<Box>,
   query: string
@@ -83,105 +142,91 @@ export function searchBoxes(
   const trimmed = query.trim();
   if (!trimmed) return [];
 
-  // 1. Direct exact box number match check e.g. "box 01", "box 1", "01", "49"
-  const boxMatch = trimmed.match(/^(?:box\s*)?(\d{1,3})$/i);
+  // Extract all boxes from Fuse index
+  const boxes: Box[] = fuse.getIndex().docs as Box[];
+
+  // 1. Direct exact Box Number match check e.g. "box 01", "box 1", "01", "49", "SD-F050"
+  const boxMatch = trimmed.match(/^(?:box\s*|sd-f)?(\d{1,3})$/i);
   if (boxMatch) {
     const num = parseInt(boxMatch[1], 10);
-    const boxNumStr = `BOX ${num < 10 ? "0" + num : num}`;
+    const formattedBoxNum = `BOX ${num < 10 ? "00" + num : num < 100 ? "0" + num : num}`;
+    const altBoxNum = `BOX ${num < 10 ? "0" + num : num}`;
+    const idMatch = `SD-F${num < 10 ? "00" + num : num < 100 ? "0" + num : num}`;
 
-    const exactBox = fuse
-      .getIndex()
-      .docs.find(
-        (b) =>
-          b.boxNumber.toUpperCase() === boxNumStr ||
-          b.boxNumber.toUpperCase() === `BOX ${num}`
-      );
-    if (exactBox) {
-      const fuseResults = fuse.search(trimmed);
-      const filtered = fuseResults.filter((r) => r.item.id !== exactBox.id);
-      return [
-        { item: exactBox, score: 0, matchedModel: exactBox.boxNumber },
-        ...filtered.map((r) => ({ item: r.item, score: r.score })),
-      ];
+    const exactBoxes = boxes.filter(
+      (b) =>
+        b.boxNumber.toUpperCase() === formattedBoxNum ||
+        b.boxNumber.toUpperCase() === altBoxNum ||
+        b.boxNumber.toUpperCase() === `BOX ${num}` ||
+        b.id.toUpperCase() === idMatch
+    );
+
+    if (exactBoxes.length > 0) {
+      return exactBoxes.map((b) => ({
+        item: b,
+        score: 0,
+        matchedModel: b.boxNumber,
+      }));
     }
   }
 
-  // 2. Expand query with brand aliases
-  const expandedQueries = expandQueryWithAliases(query);
+  // 2. High-precision Model Matching
+  const precisionResults: SearchResultItem[] = [];
 
-  const resultMap = new Map<
-    string,
-    { item: Box; score: number; matchedModel?: string }
-  >();
+  for (const box of boxes) {
+    let bestScore = 1;
+    let bestMatchedModel: string | undefined;
 
-  // Extract non-brand tokens from query for exact model token matching
-  const originalTokens = trimmed.toLowerCase().split(/\s+/).filter(Boolean);
-  const modelTokens = originalTokens.filter((t) => !BRAND_ALIASES[t]);
-
-  for (const q of expandedQueries) {
-    const fuseResults = fuse.search(q);
-
-    for (const res of fuseResults) {
-      let currentScore = res.score ?? 1;
-
-      // Find best matched model string inside compatibleModels
-      const queryLower = q.toLowerCase();
-      const queryTokens = queryLower.split(/\s+/).filter(Boolean);
-
-      let bestModel: string | undefined;
-      let maxMatchCount = 0;
-      let hasExactModelTokenMatch = false;
-
-      for (const model of res.item.compatibleModels) {
-        const modelLower = model.toLowerCase();
-        const modelWords = modelLower.split(/\s+/);
-
-        // Check if model contains all model-specific tokens (e.g. "a06") as standalone words
-        const matchesAllModelTokens =
-          modelTokens.length > 0 &&
-          modelTokens.every((mt) =>
-            modelWords.some((w) => w === mt || w.startsWith(mt))
-          );
-
-        if (matchesAllModelTokens) {
-          hasExactModelTokenMatch = true;
-        }
-
-        if (modelLower === queryLower) {
-          bestModel = model;
-          break;
-        }
-
-        let count = 0;
-        for (const token of queryTokens) {
-          if (modelLower.includes(token)) {
-            count++;
-          }
-        }
-
-        if (count > maxMatchCount) {
-          maxMatchCount = count;
-          bestModel = model;
-        }
+    for (const model of box.compatibleModels) {
+      const match = matchModelString(trimmed, model);
+      if (match.isMatch && match.score < bestScore) {
+        bestScore = match.score;
+        bestMatchedModel = model;
       }
+    }
 
-      // Boost score if the box contains the exact model token match
-      if (hasExactModelTokenMatch) {
-        currentScore = currentScore * 0.1; // Significant boost
-      }
-
-      const existing = resultMap.get(res.item.id);
-      if (!existing || currentScore < existing.score) {
-        resultMap.set(res.item.id, {
-          item: res.item,
-          score: currentScore,
-          matchedModel: bestModel || res.item.compatibleModels[0],
-        });
-      }
+    if (bestScore < 1 && bestMatchedModel) {
+      precisionResults.push({
+        item: box,
+        score: bestScore,
+        matchedModel: bestMatchedModel,
+      });
     }
   }
 
-  return Array.from(resultMap.values()).sort(
-    (a, b) => (a.score ?? 1) - (b.score ?? 1)
-  );
+  // Helper for stock status priority rank
+  const getStockRank = (box: Box) => {
+    const verified = box.stockCountVerified ?? false;
+    const qty = box.stockQuantity ?? 0;
+    if (!verified) return 2; // NOT_COUNTED
+    if (qty >= 4) return 0;  // IN_STOCK
+    if (qty >= 1) return 1;  // LOW_STOCK
+    return 3;               // OUT_OF_STOCK
+  };
+
+  // If precision matching found genuine results, return them sorted by match score, then stock status, then box number
+  if (precisionResults.length > 0) {
+    return precisionResults.sort(
+      (a, b) =>
+        (a.score ?? 1) - (b.score ?? 1) ||
+        getStockRank(a.item) - getStockRank(b.item) ||
+        a.item.boxNumber.localeCompare(b.item.boxNumber)
+    );
+  }
+
+  // 3. Fallback to Fuse fuzzy search ONLY if no precision model matches exist
+  const fuseResults = fuse.search(trimmed);
+  return fuseResults
+    .map((r) => ({
+      item: r.item,
+      score: r.score,
+      matchedModel: r.item.compatibleModels[0],
+    }))
+    .sort(
+      (a, b) =>
+        (a.score ?? 1) - (b.score ?? 1) ||
+        getStockRank(a.item) - getStockRank(b.item) ||
+        a.item.boxNumber.localeCompare(b.item.boxNumber)
+    );
 }
+

@@ -1,9 +1,11 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import Link from "next/link";
 import { Header } from "@/components/Header";
 import { AdminBoxModal } from "@/components/AdminBoxModal";
+import { DataQualityModal } from "@/components/DataQualityModal";
+import { StockCountModeModal } from "@/components/StockCountModeModal";
 import type { Box } from "@/types/screenguard";
 import {
   Package,
@@ -14,21 +16,39 @@ import {
   Search,
   Check,
   Smartphone,
-  ShieldCheck,
+  ShieldAlert,
+  Download,
   Database,
+  Filter,
+  Layers,
+  MapPin,
+  RefreshCw,
 } from "lucide-react";
 
 export default function AdminPage() {
   const [boxes, setBoxes] = useState<Box[]>([]);
   const [loading, setLoading] = useState(true);
+
+  // ── Filters State ──────────────────────────────────────────────────────────
   const [searchFilter, setSearchFilter] = useState("");
+  const [boxNumberFilter, setBoxNumberFilter] = useState("");
+  const [brandFilter, setBrandFilter] = useState("");
+  const [displaySizeFilter, setDisplaySizeFilter] = useState("");
+  const [groupIdFilter, setGroupIdFilter] = useState("");
+  const [verificationFilter, setVerificationFilter] = useState("");
+  const [stockStatusFilter, setStockStatusFilter] = useState<"ALL" | "IN_STOCK" | "LOW_STOCK" | "OUT_OF_STOCK" | "PURCHASE_LIST" | "NOT_COUNTED" | "MISSING">("ALL");
+  const [purchaseList, setPurchaseList] = useState<any[]>([]);
+
+  // ── Modals State ───────────────────────────────────────────────────────────
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isQualityModalOpen, setIsQualityModalOpen] = useState(false);
   const [editingBox, setEditingBox] = useState<Box | null>(null);
   const [saving, setSaving] = useState(false);
+  const [isStockCountModalOpen, setIsStockCountModalOpen] = useState(false);
   const [saveStatus, setSaveStatus] = useState<"idle" | "success" | "error">("idle");
   const [deleteId, setDeleteId] = useState<string | null>(null);
 
-  // ── Load all boxes from Supabase ───────────────────────────────────────────
+  // ── Load all data from API ────────────────────────────────────────────────
   async function fetchData() {
     setLoading(true);
     try {
@@ -46,11 +66,22 @@ export default function AdminPage() {
     }
   }
 
+  const fetchPurchaseList = async () => {
+    try {
+      const res = await fetch("/api/inventory?type=purchase");
+      if (res.ok) {
+        const json = await res.json();
+        if (Array.isArray(json.purchaseList)) setPurchaseList(json.purchaseList);
+      }
+    } catch (e) {}
+  };
+
   useEffect(() => {
     fetchData();
+    fetchPurchaseList();
   }, []);
 
-  // ── Save a box (add or edit) via API → Supabase upsert ────────────────────
+  // ── Save a box (add or edit) via API ──────────────────────────────────────
   const handleSaveModalBox = async (box: Box) => {
     setSaving(true);
     setSaveStatus("idle");
@@ -63,7 +94,6 @@ export default function AdminPage() {
 
       if (res.ok) {
         const json = await res.json();
-        // Merge the saved box back into local state
         setBoxes((prev) => {
           const idx = prev.findIndex((b) => b.id === box.id);
           if (idx >= 0) {
@@ -86,9 +116,9 @@ export default function AdminPage() {
     }
   };
 
-  // ── Delete a box via API → Supabase delete ─────────────────────────────────
+  // ── Delete a box via API ────────────────────────────────────────────────────
   const handleDeleteBox = async (boxId: string) => {
-    if (!confirm("Are you sure you want to delete this compatibility box?")) return;
+    if (!confirm("Are you sure you want to delete this compatibility group?")) return;
 
     setDeleteId(boxId);
     try {
@@ -121,184 +151,864 @@ export default function AdminPage() {
     setIsModalOpen(true);
   };
 
-  // ── Filtered view ─────────────────────────────────────────────────────────
-  const filteredBoxes = boxes.filter((b) => {
-    if (!searchFilter.trim()) return true;
-    const q = searchFilter.toLowerCase();
-    return (
-      b.boxNumber.toLowerCase().includes(q) ||
-      (b.displaySize && b.displaySize.toLowerCase().includes(q)) ||
-      b.title.toLowerCase().includes(q) ||
-      b.compatibleModels.some((m) => m.toLowerCase().includes(q))
-    );
-  });
+  // ── Feature 11: Updated Download CSV with Inventory Fields ─────────────────
+  const handleDownloadCSV = () => {
+    if (boxes.length === 0) {
+      alert("No data available to export.");
+      return;
+    }
 
-  const totalModelsCount = boxes.reduce(
-    (acc, b) => acc + b.compatibleModels.length,
-    0
-  );
+    const headers = [
+      "Group ID",
+      "Box Number",
+      "Box Number Status",
+      "Display Size",
+      "Title",
+      "Compatible Models",
+      "Stock Quantity",
+      "Stock Status",
+      "Stock Count Verified",
+      "Source",
+      "Verification",
+      "Category",
+      "Notes",
+    ];
+
+    const csvRows = [headers.join(",")];
+
+    boxes.forEach((b) => {
+      const qty = b.stockQuantity ?? 0;
+      const status = b.stockStatus || (qty >= 4 ? "IN_STOCK" : qty >= 1 ? "LOW_STOCK" : "OUT_OF_STOCK");
+      const verified = b.stockCountVerified ? "YES" : "NO";
+
+      const row = [
+        `"${(b.id || "").replace(/"/g, '""')}"`,
+        `"${(b.boxNumber || "").replace(/"/g, '""')}"`,
+        `"${("TEMPORARY / EDITABLE").replace(/"/g, '""')}"`,
+        `"${(b.displaySize || "Unknown").replace(/"/g, '""')}"`,
+        `"${(b.title || "").replace(/"/g, '""')}"`,
+        `"${(b.compatibleModels || []).join(" | ").replace(/"/g, '""')}"`,
+        `"${qty}"`,
+        `"${status.replace("_", " ")}"`,
+        `"${verified}"`,
+        `"${(b.source || "").replace(/"/g, '""')}"`,
+        `"${(b.verification || "").replace(/"/g, '""')}"`,
+        `"${(b.category || "Super-D").replace(/"/g, '""')}"`,
+        `"${(b.notes || "").replace(/"/g, '""')}"`,
+      ];
+      csvRows.push(row.join(","));
+    });
+
+    const csvString = csvRows.join("\n");
+    const blob = new Blob([csvString], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const dateStr = new Date().toISOString().split("T")[0];
+    const filename = `UZEE_TECH_SCREENGUARD_STOCK_${dateStr}.csv`;
+
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = filename;
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+
+  // ── Feature 12: Updated Backup JSON with Inventory & History Data ──────────
+  const handleDownloadBackup = async () => {
+    if (boxes.length === 0) {
+      alert("No data available for backup.");
+      return;
+    }
+
+    let history: any[] = [];
+    let purchases: any[] = [];
+    try {
+      const res = await fetch("/api/inventory");
+      if (res.ok) {
+        const json = await res.json();
+        history = json.history || [];
+        purchases = json.purchaseList || [];
+      }
+    } catch (e) {}
+
+    const now = new Date();
+    const dateStr = now.toISOString().split("T")[0];
+    const hours = String(now.getHours()).padStart(2, "0");
+    const mins = String(now.getMinutes()).padStart(2, "0");
+    const filename = `UZEE_TECH_SCREENGUARD_BACKUP_${dateStr}_${hours}-${mins}.json`;
+
+    const backupData = {
+      backupTimestamp: now.toISOString(),
+      recordCount: boxes.length,
+      version: "5.0-phase2-inventory",
+      boxes: boxes,
+      inventoryTransactions: history,
+      purchaseList: purchases,
+    };
+
+    const jsonString = JSON.stringify(backupData, null, 2);
+    const blob = new Blob([jsonString], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = filename;
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+
+  // ── Feature 6: Inventory Dashboard Statistics ──────────────────────────────
+  const stats = useMemo(() => {
+    const totalGroups = boxes.length;
+    let totalRelationships = 0;
+    let totalStockCount = 0;
+    let inStockCount = 0;
+    let lowStockCount = 0;
+    let outOfStockCount = 0;
+    let notCountedCount = 0;
+
+    const uniqueModels = new Set<string>();
+    const uniqueBoxLocations = new Set<string>();
+    const modelToGroupsMap: Record<string, string[]> = {};
+
+    boxes.forEach((b) => {
+      const qty = b.stockQuantity ?? 0;
+      const verified = b.stockCountVerified ?? false;
+      totalStockCount += qty;
+
+      if (!verified) {
+        notCountedCount++;
+      } else if (qty >= 4) {
+        inStockCount++;
+      } else if (qty >= 1) {
+        lowStockCount++;
+      } else {
+        outOfStockCount++;
+      }
+
+      if (b.boxNumber) {
+        uniqueBoxLocations.add(b.boxNumber.trim().toUpperCase());
+      }
+      b.compatibleModels.forEach((m) => {
+        totalRelationships++;
+        const mUpper = m.trim().toUpperCase();
+        uniqueModels.add(mUpper);
+        modelToGroupsMap[mUpper] = modelToGroupsMap[mUpper] || [];
+        modelToGroupsMap[mUpper].push(b.id);
+      });
+    });
+
+    const multiGroupCount = Object.values(modelToGroupsMap).filter(
+      (gids) => gids.length > 1
+    ).length;
+
+    return {
+      totalGroups,
+      uniqueModelsCount: uniqueModels.size,
+      totalRelationships,
+      uniqueBoxLocationsCount: uniqueBoxLocations.size,
+      multiGroupCount,
+      totalStockCount,
+      inStockCount,
+      lowStockCount,
+      outOfStockCount,
+      notCountedCount,
+      missingCount: outOfStockCount,
+    };
+  }, [boxes]);
+
+  // Available unique brands for brand filter
+  const availableBrands = useMemo(() => {
+    const brandsSet = new Set<string>();
+    boxes.forEach((b) => {
+      b.compatibleModels.forEach((m) => {
+        const firstWord = m.trim().split(" ")[0];
+        if (firstWord) {
+          brandsSet.add(firstWord);
+        }
+      });
+    });
+    return Array.from(brandsSet).sort();
+  }, [boxes]);
+
+  // ── Advanced Combinatorial Admin & Inventory Filters ───────────────────────
+  const filteredBoxes = useMemo(() => {
+    return boxes.filter((b) => {
+      const qty = b.stockQuantity ?? 0;
+      const verified = b.stockCountVerified ?? false;
+
+      // Stock status filter tab
+      if (stockStatusFilter === "NOT_COUNTED" && verified) return false;
+      if (stockStatusFilter === "IN_STOCK" && (!verified || qty < 4)) return false;
+      if (stockStatusFilter === "LOW_STOCK" && (!verified || qty < 1 || qty >= 4)) return false;
+      if (stockStatusFilter === "OUT_OF_STOCK" && (!verified || qty !== 0)) return false;
+      if (stockStatusFilter === "MISSING" && (!verified || qty !== 0)) return false;
+
+      // 1. General search filter
+      if (searchFilter.trim()) {
+        const q = searchFilter.toLowerCase();
+        const matchesGeneral =
+          b.id.toLowerCase().includes(q) ||
+          b.boxNumber.toLowerCase().includes(q) ||
+          (b.displaySize && b.displaySize.toLowerCase().includes(q)) ||
+          b.title.toLowerCase().includes(q) ||
+          b.compatibleModels.some((m) => m.toLowerCase().includes(q));
+        if (!matchesGeneral) return false;
+      }
+
+      // 2. Box Number Filter
+      if (boxNumberFilter.trim()) {
+        const qBox = boxNumberFilter.toLowerCase().trim();
+        if (!b.boxNumber.toLowerCase().includes(qBox)) return false;
+      }
+
+      // 3. Brand Filter
+      if (brandFilter.trim()) {
+        const qBrand = brandFilter.toLowerCase();
+        const matchesBrand = b.compatibleModels.some((m) =>
+          m.toLowerCase().startsWith(qBrand)
+        );
+        if (!matchesBrand) return false;
+      }
+
+      // 4. Display Size Filter
+      if (displaySizeFilter.trim()) {
+        const qSize = displaySizeFilter.toLowerCase().trim();
+        if (!b.displaySize || !b.displaySize.toLowerCase().includes(qSize))
+          return false;
+      }
+
+      // 5. Group ID Filter
+      if (groupIdFilter.trim()) {
+        const qId = groupIdFilter.toLowerCase().trim();
+        if (!b.id.toLowerCase().includes(qId)) return false;
+      }
+
+      // 6. Verification Filter
+      if (verificationFilter.trim()) {
+        const qVer = verificationFilter.toLowerCase().trim();
+        if (!b.verification || !b.verification.toLowerCase().includes(qVer))
+          return false;
+      }
+
+      return true;
+    });
+  }, [
+    boxes,
+    stockStatusFilter,
+    searchFilter,
+    boxNumberFilter,
+    brandFilter,
+    displaySizeFilter,
+    groupIdFilter,
+    verificationFilter,
+  ]);
+
+  const resetFilters = () => {
+    setStockStatusFilter("ALL");
+    setSearchFilter("");
+    setBoxNumberFilter("");
+    setBrandFilter("");
+    setDisplaySizeFilter("");
+    setGroupIdFilter("");
+    setVerificationFilter("");
+  };
+
+  const hasActiveFilters =
+    stockStatusFilter !== "ALL" ||
+    searchFilter ||
+    boxNumberFilter ||
+    brandFilter ||
+    displaySizeFilter ||
+    groupIdFilter ||
+    verificationFilter;
+
+  const handleUpdatePurchaseStatus = async (
+    purchaseId: string,
+    status: "NEEDS ORDER" | "ORDERED" | "RECEIVED" | "CANCELLED"
+  ) => {
+    try {
+      const res = await fetch("/api/inventory", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          action: "update_purchase_status",
+          purchaseId,
+          status,
+        }),
+      });
+      if (res.ok) {
+        fetchPurchaseList();
+        fetchData(); // Refresh stock counts if RECEIVED auto-restocked
+      }
+    } catch (e) {
+      console.error("Update purchase status failed", e);
+    }
+  };
 
   return (
     <div className="min-h-screen flex flex-col bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 transition-colors">
       <Header totalBoxes={boxes.length} />
 
-      <main className="flex-1 max-w-6xl w-full mx-auto px-4 sm:px-6 py-8 space-y-8">
-        {/* Admin Navigation Bar */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 py-8 space-y-8">
+        {/* Admin Navigation & Action Bar */}
+        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
           <div>
             <Link
               href="/"
               className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-xs sm:text-sm font-bold text-slate-700 dark:text-slate-300 hover:text-brand-700 dark:hover:text-brand-400 hover:bg-slate-100 dark:hover:bg-slate-800 shadow-sm transition-all mb-3 active:scale-95"
             >
               <ArrowLeft className="w-4 h-4 text-brand-700 dark:text-brand-400" />
-              <span>← Back to Search</span>
+              <span>← Back to Public Search</span>
             </Link>
             <h1 className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white">
-              Admin Compatibility Manager
+              Admin Compatibility & Inventory Manager
             </h1>
             <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 font-medium">
-              Add, edit, or delete screen protector box numbers and model mappings
+              Super-D Master Dataset (Permanent Group IDs + Editable Box Inventory Locations + Live Stock Control)
             </p>
           </div>
 
-          {/* Action Buttons */}
+          {/* Action Control Buttons */}
           <div className="flex items-center gap-2 flex-wrap">
             <button
-              onClick={handleOpenAddModal}
-              className="px-4 py-2.5 rounded-2xl bg-brand-700 hover:bg-brand-800 text-white font-bold text-xs sm:text-sm shadow-md transition-all flex items-center gap-2"
+              onClick={() => setIsStockCountModalOpen(true)}
+              className="px-4 py-2.5 rounded-2xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs sm:text-sm shadow-md transition-all flex items-center gap-2 active:scale-95"
             >
-              <Plus className="w-4 h-4" /> Add Box
+              <Package className="w-4 h-4" /> Stock Count Mode
             </button>
 
-            {/* Save status indicator */}
+            <button
+              onClick={handleOpenAddModal}
+              className="px-4 py-2.5 rounded-2xl bg-brand-700 hover:bg-brand-800 text-white font-bold text-xs sm:text-sm shadow-md transition-all flex items-center gap-2 active:scale-95"
+            >
+              <Plus className="w-4 h-4" /> Add Compatibility Group
+            </button>
+
+            <button
+              onClick={() => setIsQualityModalOpen(true)}
+              className="px-4 py-2.5 rounded-2xl bg-amber-500 hover:bg-amber-600 text-white font-bold text-xs sm:text-sm shadow-md transition-all flex items-center gap-2 active:scale-95"
+            >
+              <ShieldAlert className="w-4 h-4" /> Data Quality
+            </button>
+
+            <button
+              onClick={handleDownloadCSV}
+              className="px-4 py-2.5 rounded-2xl bg-slate-900 dark:bg-slate-100 hover:bg-slate-800 dark:hover:bg-white text-white dark:text-slate-900 font-bold text-xs sm:text-sm shadow-md transition-all flex items-center gap-2 active:scale-95"
+            >
+              <Download className="w-4 h-4" /> Download CSV
+            </button>
+
+            <button
+              onClick={handleDownloadBackup}
+              className="px-4 py-2.5 rounded-2xl bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 font-bold text-xs sm:text-sm shadow-sm transition-all flex items-center gap-2 active:scale-95"
+            >
+              <Database className="w-4 h-4 text-brand-700 dark:text-brand-400" /> Backup Data
+            </button>
+
+            {/* Save Status Banner */}
             {saveStatus === "success" && (
               <span className="flex items-center gap-1.5 px-4 py-2.5 rounded-2xl bg-emerald-100 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-400 font-bold text-xs">
-                <Check className="w-4 h-4" /> Saved to Supabase
+                <Check className="w-4 h-4" /> Saved Successfully
               </span>
             )}
             {saveStatus === "error" && (
               <span className="flex items-center gap-1.5 px-4 py-2.5 rounded-2xl bg-red-100 dark:bg-red-950/40 text-red-700 dark:text-red-400 font-bold text-xs">
-                Save failed — check Supabase config
+                Save Failed — Try Again
               </span>
             )}
           </div>
         </div>
 
-        {/* Stats Row */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-          <div className="bg-white dark:bg-slate-900 p-5 rounded-3xl border border-slate-200/80 dark:border-slate-800 shadow-sm flex items-center gap-4">
-            <div className="p-3.5 rounded-2xl bg-brand-50 dark:bg-brand-950 text-brand-700 dark:text-brand-400">
-              <Package className="w-6 h-6" />
+        {/* Feature 6 & 9: Live Inventory Dashboard & Interactive Alert Cards */}
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-7 gap-3">
+          <div className="bg-white dark:bg-slate-900 p-3.5 rounded-3xl border border-slate-200/80 dark:border-slate-800 shadow-sm flex items-center gap-3">
+            <div className="p-2.5 rounded-2xl bg-brand-50 dark:bg-brand-950 text-brand-700 dark:text-brand-400 shrink-0">
+              <Package className="w-4 h-4" />
             </div>
             <div>
-              <p className="text-xs font-bold text-slate-400 uppercase tracking-wider">
-                Total Boxes
+              <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+                Total Groups
               </p>
-              <h3 className="text-2xl font-black text-slate-900 dark:text-white">
-                {boxes.length}
+              <h3 className="text-lg font-black text-slate-900 dark:text-white">
+                {stats.totalGroups}
               </h3>
             </div>
           </div>
 
-          <div className="bg-white dark:bg-slate-900 p-5 rounded-3xl border border-slate-200/80 dark:border-slate-800 shadow-sm flex items-center gap-4">
-            <div className="p-3.5 rounded-2xl bg-emerald-50 dark:bg-emerald-950 text-emerald-600 dark:text-emerald-400">
-              <Smartphone className="w-6 h-6" />
+          <button
+            onClick={() => setStockStatusFilter("NOT_COUNTED")}
+            className={`p-3.5 rounded-3xl border text-left transition-all flex items-center gap-3 ${
+              stockStatusFilter === "NOT_COUNTED"
+                ? "bg-slate-100 dark:bg-slate-800 border-slate-400 ring-2 ring-slate-400/30"
+                : "bg-white dark:bg-slate-900 border-slate-200/80 dark:border-slate-800 hover:border-slate-400"
+            }`}
+          >
+            <div className="p-2.5 rounded-2xl bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 shrink-0 font-bold text-xs">
+              ?
             </div>
             <div>
-              <p className="text-xs font-bold text-slate-400 uppercase tracking-wider">
-                Total Models Indexed
+              <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+                Not Counted
               </p>
-              <h3 className="text-2xl font-black text-slate-900 dark:text-white">
-                {totalModelsCount}
+              <h3 className="text-lg font-black text-slate-700 dark:text-slate-300">
+                {stats.notCountedCount}
+              </h3>
+            </div>
+          </button>
+
+          <button
+            onClick={() => setStockStatusFilter("IN_STOCK")}
+            className={`p-3.5 rounded-3xl border text-left transition-all flex items-center gap-3 ${
+              stockStatusFilter === "IN_STOCK"
+                ? "bg-emerald-50 dark:bg-emerald-950/60 border-emerald-300 ring-2 ring-emerald-500/30"
+                : "bg-white dark:bg-slate-900 border-slate-200/80 dark:border-slate-800 hover:border-emerald-300"
+            }`}
+          >
+            <div className="p-2.5 rounded-2xl bg-emerald-100 dark:bg-emerald-900/60 text-emerald-700 dark:text-emerald-300 shrink-0 font-bold text-xs">
+              ✓
+            </div>
+            <div>
+              <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+                In Stock
+              </p>
+              <h3 className="text-lg font-black text-emerald-700 dark:text-emerald-400">
+                {stats.inStockCount}
+              </h3>
+            </div>
+          </button>
+
+          <button
+            onClick={() => setStockStatusFilter("LOW_STOCK")}
+            className={`p-3.5 rounded-3xl border text-left transition-all flex items-center gap-3 ${
+              stockStatusFilter === "LOW_STOCK"
+                ? "bg-amber-50 dark:bg-amber-950/60 border-amber-300 ring-2 ring-amber-500/30"
+                : "bg-white dark:bg-slate-900 border-slate-200/80 dark:border-slate-800 hover:border-amber-300"
+            }`}
+          >
+            <div className="p-2.5 rounded-2xl bg-amber-100 dark:bg-amber-900/60 text-amber-700 dark:text-amber-300 shrink-0 font-bold text-xs">
+              !
+            </div>
+            <div>
+              <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+                Low Stock
+              </p>
+              <h3 className="text-lg font-black text-amber-700 dark:text-amber-400">
+                {stats.lowStockCount}
+              </h3>
+            </div>
+          </button>
+
+          <button
+            onClick={() => setStockStatusFilter("OUT_OF_STOCK")}
+            className={`p-3.5 rounded-3xl border text-left transition-all flex items-center gap-3 ${
+              stockStatusFilter === "OUT_OF_STOCK"
+                ? "bg-rose-50 dark:bg-rose-950/60 border-rose-300 ring-2 ring-rose-500/30"
+                : "bg-white dark:bg-slate-900 border-slate-200/80 dark:border-slate-800 hover:border-rose-300"
+            }`}
+          >
+            <div className="p-2.5 rounded-2xl bg-rose-100 dark:bg-rose-900/60 text-rose-700 dark:text-rose-300 shrink-0 font-bold text-xs">
+              ✕
+            </div>
+            <div>
+              <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+                Out of Stock
+              </p>
+              <h3 className="text-lg font-black text-rose-700 dark:text-rose-400">
+                {stats.outOfStockCount}
+              </h3>
+            </div>
+          </button>
+
+          <div className="bg-white dark:bg-slate-900 p-3.5 rounded-3xl border border-slate-200/80 dark:border-slate-800 shadow-sm flex items-center gap-3">
+            <div className="p-2.5 rounded-2xl bg-purple-50 dark:bg-purple-950 text-purple-600 dark:text-purple-400 shrink-0">
+              <Layers className="w-4 h-4" />
+            </div>
+            <div>
+              <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+                Total Units
+              </p>
+              <h3 className="text-lg font-black text-slate-900 dark:text-white">
+                {stats.totalStockCount}
               </h3>
             </div>
           </div>
 
-          <div className="bg-white dark:bg-slate-900 p-5 rounded-3xl border border-slate-200/80 dark:border-slate-800 shadow-sm flex items-center gap-4">
-            <div className="p-3.5 rounded-2xl bg-blue-50 dark:bg-blue-950 text-blue-600 dark:text-blue-400">
-              <Database className="w-6 h-6" />
+          <button
+            onClick={() => setStockStatusFilter("PURCHASE_LIST")}
+            className={`p-3.5 rounded-3xl border text-left transition-all flex items-center gap-3 ${
+              stockStatusFilter === "PURCHASE_LIST"
+                ? "bg-brand-50 dark:bg-brand-950/60 border-brand-300 ring-2 ring-brand-500/30"
+                : "bg-white dark:bg-slate-900 border-slate-200/80 dark:border-slate-800 hover:border-brand-300"
+            }`}
+          >
+            <div className="p-2.5 rounded-2xl bg-brand-100 dark:bg-brand-900/60 text-brand-700 dark:text-brand-300 shrink-0 font-bold text-xs">
+              🛒
             </div>
             <div>
-              <p className="text-xs font-bold text-slate-400 uppercase tracking-wider">
-                Storage
+              <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+                Purchase Queue
               </p>
-              <h3 className="text-base font-bold text-slate-900 dark:text-white">
-                Supabase PostgreSQL
+              <h3 className="text-lg font-black text-brand-700 dark:text-brand-400">
+                {purchaseList.filter((p) => p.status !== "RECEIVED" && p.status !== "CANCELLED").length}
               </h3>
             </div>
-          </div>
+          </button>
         </div>
 
-        {/* Filter Input */}
-        <div className="relative">
-          <Search className="w-5 h-5 absolute left-4 top-3.5 text-slate-400" />
-          <input
-            type="text"
-            value={searchFilter}
-            onChange={(e) => setSearchFilter(e.target.value)}
-            placeholder="Filter by box number, display size, or model name..."
-            className="w-full pl-12 pr-4 py-3 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-sm font-medium text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-brand-700/30"
-          />
+        {/* Feature 7 & 8: Stock Tabs & Advanced Combinatorial Admin Filters */}
+        <div className="bg-white dark:bg-slate-900 rounded-3xl p-5 border border-slate-200/80 dark:border-slate-800 shadow-sm space-y-4">
+          <div className="flex items-center justify-between flex-wrap gap-2">
+            {/* Tab selector */}
+            <div className="flex items-center gap-1.5 p-1 rounded-2xl bg-slate-100 dark:bg-slate-800/80 flex-wrap">
+              <button
+                onClick={() => setStockStatusFilter("ALL")}
+                className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all ${
+                  stockStatusFilter === "ALL"
+                    ? "bg-white dark:bg-slate-900 text-slate-900 dark:text-white shadow-sm"
+                    : "text-slate-500 hover:text-slate-900 dark:hover:text-white"
+                }`}
+              >
+                All Groups ({boxes.length})
+              </button>
+
+              <button
+                onClick={() => setStockStatusFilter("NOT_COUNTED")}
+                className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all ${
+                  stockStatusFilter === "NOT_COUNTED"
+                    ? "bg-slate-700 text-white shadow-sm"
+                    : "text-slate-500 hover:text-slate-900 dark:hover:text-white"
+                }`}
+              >
+                Not Counted ({stats.notCountedCount})
+              </button>
+
+              <button
+                onClick={() => setStockStatusFilter("IN_STOCK")}
+                className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all ${
+                  stockStatusFilter === "IN_STOCK"
+                    ? "bg-emerald-600 text-white shadow-sm"
+                    : "text-slate-500 hover:text-emerald-600"
+                }`}
+              >
+                In Stock ({stats.inStockCount})
+              </button>
+
+              <button
+                onClick={() => setStockStatusFilter("LOW_STOCK")}
+                className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all ${
+                  stockStatusFilter === "LOW_STOCK"
+                    ? "bg-amber-500 text-white shadow-sm"
+                    : "text-slate-500 hover:text-amber-500"
+                }`}
+              >
+                Low Stock ({stats.lowStockCount})
+              </button>
+
+              <button
+                onClick={() => setStockStatusFilter("MISSING")}
+                className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all ${
+                  stockStatusFilter === "MISSING"
+                    ? "bg-rose-600 text-white shadow-sm"
+                    : "text-slate-500 hover:text-rose-600"
+                }`}
+              >
+                Missing Stock / Out ({stats.missingCount})
+              </button>
+
+              <button
+                onClick={() => setStockStatusFilter("PURCHASE_LIST")}
+                className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all ${
+                  stockStatusFilter === "PURCHASE_LIST"
+                    ? "bg-brand-700 text-white shadow-sm"
+                    : "text-slate-500 hover:text-brand-700"
+                }`}
+              >
+                Purchase List ({purchaseList.length})
+              </button>
+            </div>
+
+            {hasActiveFilters && (
+              <button
+                onClick={resetFilters}
+                className="text-xs font-semibold text-brand-700 dark:text-brand-400 hover:underline flex items-center gap-1"
+              >
+                <RefreshCw className="w-3 h-3" /> Reset Filters
+              </button>
+            )}
+          </div>
+
+          {stockStatusFilter !== "PURCHASE_LIST" && (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-3 pt-1">
+              {/* General Search */}
+              <div className="relative lg:col-span-2">
+                <Search className="w-4 h-4 absolute left-3.5 top-3 text-slate-400" />
+                <input
+                  type="text"
+                  value={searchFilter}
+                  onChange={(e) => setSearchFilter(e.target.value)}
+                  placeholder="Search model, box, title..."
+                  className="w-full pl-10 pr-3 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs font-medium text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-brand-700/30"
+                />
+              </div>
+
+              {/* Box Number */}
+              <div>
+                <input
+                  type="text"
+                  value={boxNumberFilter}
+                  onChange={(e) => setBoxNumberFilter(e.target.value)}
+                  placeholder="Box (e.g. BOX 041)"
+                  className="w-full px-3 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs font-medium text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-brand-700/30"
+                />
+              </div>
+
+              {/* Brand Dropdown */}
+              <div>
+                <select
+                  value={brandFilter}
+                  onChange={(e) => setBrandFilter(e.target.value)}
+                  className="w-full px-3 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs font-medium text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-brand-700/30"
+                >
+                  <option value="">All Brands</option>
+                  {availableBrands.map((b) => (
+                    <option key={b} value={b}>
+                      {b}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              {/* Display Size */}
+              <div>
+                <input
+                  type="text"
+                  value={displaySizeFilter}
+                  onChange={(e) => setDisplaySizeFilter(e.target.value)}
+                  placeholder='Size (e.g. 6.7")'
+                  className="w-full px-3 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs font-medium text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-brand-700/30"
+                />
+              </div>
+
+              {/* Group ID */}
+              <div>
+                <input
+                  type="text"
+                  value={groupIdFilter}
+                  onChange={(e) => setGroupIdFilter(e.target.value)}
+                  placeholder="Group ID (e.g. SD-F041)"
+                  className="w-full px-3 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs font-medium text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-brand-700/30"
+                />
+              </div>
+            </div>
+          )}
         </div>
 
-        {/* Boxes List */}
-        {loading ? (
-          <div className="text-center py-12 text-slate-400 font-semibold">
-            Loading from Supabase…
+        {/* Feature 8: Purchase List Management Section */}
+        {stockStatusFilter === "PURCHASE_LIST" ? (
+          <div className="bg-white dark:bg-slate-900 rounded-3xl p-6 border border-slate-200 dark:border-slate-800 space-y-4">
+            <h3 className="text-base font-bold text-slate-900 dark:text-white flex items-center gap-2">
+              🛒 Purchase Order Queue ({purchaseList.length} items)
+            </h3>
+
+            {purchaseList.length === 0 ? (
+              <p className="text-xs text-slate-400 italic text-center py-8">
+                Purchase list is currently empty. Click &quot;Add to Purchase List&quot; inside any Box Modal or Result Card.
+              </p>
+            ) : (
+              <div className="space-y-3">
+                {purchaseList.map((item) => (
+                  <div
+                    key={item.id}
+                    className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 flex flex-col sm:flex-row sm:items-center justify-between gap-3"
+                  >
+                    <div className="space-y-1">
+                      <div className="flex items-center gap-2">
+                        <span className="px-2 py-0.5 rounded-md bg-brand-700 text-white font-black text-xs">
+                          {item.boxNumber}
+                        </span>
+                        <span className="text-xs font-bold text-slate-900 dark:text-white">
+                          {item.title || item.groupId}
+                        </span>
+                      </div>
+                      <p className="text-xs text-slate-500 dark:text-slate-400">
+                        Current Stock: <span className="font-bold text-slate-700 dark:text-slate-200">{item.currentQuantity}</span> | Requested: <span className="font-bold text-brand-700 dark:text-brand-400">{item.requestedQuantity} units</span>
+                      </p>
+                    </div>
+
+                    <div className="flex items-center gap-2 flex-wrap">
+                      {(["NEEDS ORDER", "ORDERED", "RECEIVED", "CANCELLED"] as const).map((st) => (
+                        <button
+                          key={st}
+                          onClick={() => handleUpdatePurchaseStatus(item.id, st)}
+                          className={`px-3 py-1 rounded-xl text-xs font-bold transition-all ${
+                            item.status === st
+                              ? st === "RECEIVED"
+                                ? "bg-emerald-600 text-white"
+                                : st === "ORDERED"
+                                ? "bg-blue-600 text-white"
+                                : st === "CANCELLED"
+                                ? "bg-slate-600 text-white"
+                                : "bg-brand-700 text-white"
+                              : "bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-200 border border-slate-200 dark:border-slate-700"
+                          }`}
+                        >
+                          {st}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         ) : (
-          <div className="space-y-4">
-            {filteredBoxes.map((box) => (
-              <div
-                key={box.id}
-                className="bg-white dark:bg-slate-900 rounded-3xl p-5 border border-slate-200/80 dark:border-slate-800 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4 hover:border-slate-300 dark:hover:border-slate-700 transition-colors"
-              >
-                <div className="space-y-2 flex-1">
-                  <div className="flex items-center gap-3 flex-wrap">
-                    <span className="px-3 py-1 bg-brand-700 text-white rounded-xl font-black text-sm tracking-wide">
-                      {box.boxNumber}
-                    </span>
-                    <span className="px-2.5 py-1 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 rounded-xl font-bold text-xs border border-slate-200/60 dark:border-slate-700/60 flex items-center gap-1">
-                      <Smartphone className="w-3.5 h-3.5 text-brand-700 dark:text-brand-400" />
-                      <span>{box.displaySize || "Unknown"}</span>
-                    </span>
-                    <h3 className="text-sm font-bold text-slate-900 dark:text-white">
-                      {box.title}
-                    </h3>
-                  </div>
-
-                  <div className="flex flex-wrap gap-1.5 max-h-24 overflow-y-auto pr-2">
-                    {box.compatibleModels.map((m, idx) => (
-                      <span
-                        key={idx}
-                        className="px-2.5 py-0.5 rounded-lg bg-slate-100 dark:bg-slate-800 text-[11px] font-medium text-slate-600 dark:text-slate-300"
-                      >
-                        {m}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-
-                <div className="flex items-center gap-2 shrink-0 border-t md:border-t-0 border-slate-100 dark:border-slate-800 pt-3 md:pt-0">
-                  <button
-                    onClick={() => handleOpenEditModal(box)}
-                    className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 text-xs font-semibold transition-colors"
-                  >
-                    <Edit3 className="w-3.5 h-3.5" /> Edit
-                  </button>
-
-                  <button
-                    onClick={() => handleDeleteBox(box.id)}
-                    disabled={deleteId === box.id}
-                    className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-red-50 dark:bg-red-950/40 text-red-600 dark:text-red-400 hover:bg-red-100 dark:hover:bg-red-900/40 text-xs font-semibold transition-colors disabled:opacity-50"
-                  >
-                    <Trash2 className="w-3.5 h-3.5" />
-                    {deleteId === box.id ? "Deleting…" : "Delete"}
-                  </button>
-                </div>
+          /* Groups Results List */
+          loading ? (
+            <div className="text-center py-12 text-slate-400 font-semibold">
+              Loading Super-D Master compatibility groups…
+            </div>
+          ) : (
+            <div className="space-y-4">
+              <div className="flex items-center justify-between text-xs font-bold text-slate-500 dark:text-slate-400 px-1">
+                <span>Showing {filteredBoxes.length} of {boxes.length} Groups</span>
               </div>
-            ))}
-          </div>
+
+              {filteredBoxes.length === 0 ? (
+                <div className="text-center py-12 bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 text-slate-400 font-semibold">
+                  No matching compatibility groups found. Try resetting filters.
+                </div>
+              ) : (
+                filteredBoxes.map((box) => {
+                  const qty = box.stockQuantity ?? 0;
+                  const ver = box.stockCountVerified ?? false;
+                  const st = box.stockStatus || (ver ? (qty >= 4 ? "IN_STOCK" : qty >= 1 ? "LOW_STOCK" : "OUT_OF_STOCK") : "NOT_COUNTED");
+
+                  return (
+                    <div
+                      key={box.id}
+                      className="bg-white dark:bg-slate-900 rounded-3xl p-5 border border-slate-200/80 dark:border-slate-800 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4 hover:border-slate-300 dark:hover:border-slate-700 transition-colors"
+                    >
+                      <div className="space-y-2 flex-1">
+                        <div className="flex items-center gap-2.5 flex-wrap">
+                          <span className="px-2.5 py-0.5 bg-slate-900 dark:bg-slate-100 text-white dark:text-slate-900 rounded-lg font-black text-xs">
+                            {box.id}
+                          </span>
+                          <span className="px-3 py-1 bg-brand-700 text-white rounded-xl font-black text-sm tracking-wide">
+                            {box.boxNumber}
+                          </span>
+                          <span className="px-2.5 py-1 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 rounded-xl font-bold text-xs border border-slate-200/60 dark:border-slate-700/60 flex items-center gap-1">
+                            <Smartphone className="w-3.5 h-3.5 text-brand-700 dark:text-brand-400" />
+                            <span>{box.displaySize || "Unknown"}</span>
+                          </span>
+
+                          {/* Stock Column / Badge */}
+                          <div className="flex flex-col">
+                            <span className="text-[9px] font-extrabold uppercase tracking-wider text-slate-400">
+                              STOCK
+                            </span>
+                            <div className="flex items-center gap-1.5">
+                              <span className="text-xs font-black text-slate-900 dark:text-white">
+                                {ver ? `${qty} units` : "Not Counted"}
+                              </span>
+                              <span
+                                className={`px-2 py-0.5 rounded-md text-[10px] font-black tracking-wider uppercase border ${
+                                  st === "IN_STOCK"
+                                    ? "bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-950/50 dark:text-emerald-400 dark:border-emerald-800"
+                                    : st === "LOW_STOCK"
+                                    ? "bg-amber-50 text-amber-700 border-amber-200 dark:bg-amber-950/50 dark:text-amber-400 dark:border-amber-800"
+                                    : st === "NOT_COUNTED"
+                                    ? "bg-slate-100 text-slate-600 border-slate-200 dark:bg-slate-800 dark:text-slate-400 dark:border-slate-700"
+                                    : "bg-rose-50 text-rose-700 border-rose-200 dark:bg-rose-950/50 dark:text-rose-400 dark:border-rose-800"
+                                }`}
+                              >
+                                {st === "IN_STOCK"
+                                  ? "IN STOCK"
+                                  : st === "LOW_STOCK"
+                                  ? "LOW STOCK"
+                                  : st === "NOT_COUNTED"
+                                  ? "NOT COUNTED"
+                                  : "OUT OF STOCK"}
+                              </span>
+                            </div>
+                          </div>
+
+                          <h3 className="text-sm font-bold text-slate-900 dark:text-white">
+                            {box.title}
+                          </h3>
+                        </div>
+
+                        <div className="flex flex-wrap gap-1.5 max-h-24 overflow-y-auto pr-2">
+                          {box.compatibleModels.map((m, idx) => (
+                            <span
+                              key={idx}
+                              className="px-2.5 py-0.5 rounded-lg bg-slate-100 dark:bg-slate-800 text-[11px] font-medium text-slate-600 dark:text-slate-300"
+                            >
+                              {m}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+
+                      {/* Quick Stock Controls on row & Edit */}
+                      <div className="flex items-center gap-2 shrink-0 flex-wrap border-t md:border-t-0 border-slate-100 dark:border-slate-800 pt-3 md:pt-0">
+                        <div className="flex items-center gap-2 bg-slate-100 dark:bg-slate-800/80 px-2.5 py-1.5 rounded-xl border border-slate-200/60 dark:border-slate-700/60">
+                          <button
+                            onClick={async () => {
+                              if (qty <= 0 || !ver) return;
+                              await fetch("/api/inventory", {
+                                method: "POST",
+                                headers: { "Content-Type": "application/json" },
+                                body: JSON.stringify({ action: "update_stock", groupId: box.id, stockAction: "SALE", amount: 1 }),
+                              });
+                              fetchData();
+                            }}
+                            disabled={qty <= 0 || !ver}
+                            className="w-7 h-7 flex items-center justify-center bg-rose-500 text-white rounded-lg font-black text-sm hover:bg-rose-600 transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+                            title={!ver ? "Stock must be physically counted first" : "Deduct 1 unit sold"}
+                          >
+                            −
+                          </button>
+                          <span className="text-sm font-black px-2 min-w-[24px] text-center text-slate-900 dark:text-white">
+                            {ver ? qty : "?"}
+                          </span>
+                          <button
+                            onClick={async () => {
+                              await fetch("/api/inventory", {
+                                method: "POST",
+                                headers: { "Content-Type": "application/json" },
+                                body: JSON.stringify({ action: "update_stock", groupId: box.id, stockAction: "RESTOCK", amount: 5 }),
+                              });
+                              fetchData();
+                            }}
+                            className="w-7 h-7 flex items-center justify-center bg-emerald-600 text-white rounded-lg font-black text-sm hover:bg-emerald-700 transition-colors"
+                            title="Quick restock +5"
+                          >
+                            +
+                          </button>
+                        </div>
+
+                        <button
+                          onClick={() => handleOpenEditModal(box)}
+                          className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 text-xs font-semibold transition-colors"
+                        >
+                          <Edit3 className="w-3.5 h-3.5" /> Edit
+                        </button>
+
+                        <button
+                          onClick={() => handleDeleteBox(box.id)}
+                          disabled={deleteId === box.id}
+                          className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-red-50 dark:bg-red-950/40 text-red-600 dark:text-red-400 hover:bg-red-100 dark:hover:bg-red-900/40 text-xs font-semibold transition-colors disabled:opacity-50"
+                        >
+                          <Trash2 className="w-3.5 h-3.5" />
+                          {deleteId === box.id ? "Deleting…" : "Delete"}
+                        </button>
+                      </div>
+                    </div>
+                  );
+                })
+              )}
+            </div>
+          )
         )}
       </main>
 
@@ -308,6 +1018,19 @@ export default function AdminPage() {
         onSave={handleSaveModalBox}
         initialBox={editingBox}
         existingBoxCount={boxes.length}
+      />
+
+      <DataQualityModal
+        isOpen={isQualityModalOpen}
+        onClose={() => setIsQualityModalOpen(false)}
+        boxes={boxes}
+      />
+
+      <StockCountModeModal
+        isOpen={isStockCountModalOpen}
+        onClose={() => setIsStockCountModalOpen(false)}
+        boxes={boxes}
+        onComplete={fetchData}
       />
     </div>
   );

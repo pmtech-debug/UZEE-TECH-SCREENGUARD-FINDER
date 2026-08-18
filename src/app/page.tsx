@@ -226,7 +226,7 @@ export default function HomePage() {
         ) : (
           <div className="space-y-5">
             {results.map((res) => (
-              <ResultCard key={res.item.id} result={res} searchQuery={query} />
+              <ResultCard key={res.item.id} result={res} searchQuery={query} onStockUpdate={loadData} />
             ))}
           </div>
         )}
